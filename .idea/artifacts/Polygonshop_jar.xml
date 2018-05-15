@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Polygonshop:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Polygonshop_jar</output-path>
+    <root id="archive" name="Polygonshop.jar">
+      <element id="module-output" name="Polygonshop" />
+      <element id="file-copy" path="$PROJECT_DIR$/icon.png" />
+    </root>
+  </artifact>
+</component>

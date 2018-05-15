@@ -1,0 +1,39 @@
+.root {
+    -fx-font-size: 14px;
+    -fx-font-family: sans-serif;
+}
+
+.menu, .menu-item, .context-menu{
+    -fx-background-color: #006074;
+}
+
+.tab-pane .tab-header-background{
+    -fx-background-color: #474747;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+#menu-bar {
+    -fx-background-color: #006074;
+}
+
+#main-content > .split-pane-divider {
+    -fx-pref-width: 2px;
+    -fx-background-color: #4e4e4e;
+}
+
+#main-content{
+    -fx-border-width: 0;
+    -fx-background-color: #585858;
+}
+
+#right-side-menu{
+    -fx-border-width: 0;
+    -fx-background-color: #585858;
+}
