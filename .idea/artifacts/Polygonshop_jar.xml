@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Polygonshop_jar</output-path>
     <root id="archive" name="Polygonshop.jar">
       <element id="module-output" name="Polygonshop" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jfoenix-8.0.4.jar" path-in-jar="/" />
       <element id="file-copy" path="$PROJECT_DIR$/icon.png" />
     </root>
   </artifact>

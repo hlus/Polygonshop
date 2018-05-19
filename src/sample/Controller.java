@@ -1,5 +1,6 @@
 package sample;
 
+import com.jfoenix.controls.JFXTabPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -26,7 +27,7 @@ public class Controller {
     Menu MIEdit;
 
     @FXML
-    TabPane TPPolygonFiles;
+    JFXTabPane TPPolygonFiles;
     @FXML
     Button BAddPoints, BBuildPolygon, BRemovePolygon;
 
@@ -96,7 +97,7 @@ public class Controller {
 
     @FXML
     private void onCreateNewFile() {
-        Dialog createDialog = DialogHelper.getCreateNewDialog();
+        Dialog createDialog = DialogHelper.getCreateNewDialog(this.getClass().getResource("main.css").toExternalForm());
         createDialog.initOwner(TPPolygonFiles.getScene().getWindow());
         Optional<String[]> result = createDialog.showAndWait();
         result.ifPresent(res -> {
