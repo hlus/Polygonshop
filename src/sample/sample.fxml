@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -46,12 +45,12 @@
     <HBox VBox.vgrow="ALWAYS">
         <SplitPane id="main-content" dividerPositions="0.85" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
             <items>
-                <TabPane fx:id="TPPolygonFiles" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
-                <VBox id="right-side-menu" minWidth="120" spacing="5.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <JFXTabPane fx:id="TPPolygonFiles" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
+                <VBox id="right-side-menu" maxWidth="220" minWidth="120" spacing="5.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                     <padding><Insets bottom="5" left="5" right="5" top="5" /></padding>
-                    <Button fx:id="BAddPoints" prefWidth="150">Add points</Button>
-                    <Button fx:id="BBuildPolygon" prefWidth="150">Build polygon</Button>
-                    <Button fx:id="BRemovePolygon" prefWidth="150">Remove polygon</Button>
+                    <JFXButton fx:id="BAddPoints" prefWidth="150">Add points</JFXButton>
+                    <JFXButton fx:id="BBuildPolygon" prefWidth="150">Build polygon</JFXButton>
+                    <JFXButton fx:id="BRemovePolygon" prefWidth="150">Remove polygon</JFXButton>
                 </VBox>
             </items>
         </SplitPane>

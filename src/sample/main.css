@@ -1,14 +1,55 @@
 .root {
+    -fx-background-color: #2D2E32;
     -fx-font-size: 14px;
-    -fx-font-family: sans-serif;
+    -fx-background-insets: 0 0 0 0, 0, 4, 4;
+    -fx-border-color: linear-gradient(transparent, #32739B);
+}
+
+
+.button {
+    -fx-text-fill: #fff;
+    -fx-background-radius: 0;
+}
+
+.label{
+    -fx-text-fill: #ffffff;
+}
+
+.text-input {
+    -fx-text-fill: white;
+}
+
+.dialog-pane .button {
+    -fx-font-family: 'Open Sans', sans-serif;
+    -fx-font-size: 14;
+    -fx-text-fill: #55595c;
+    -fx-background-color: #d0d0d0;
+}
+
+
+#menu-bar {
+    -fx-background-color: linear-gradient(#494C58, #3E3F43);
+}
+
+#menu-bar .label{
+    -fx-text-fill: #EAEAEA;
 }
 
 .menu, .menu-item, .context-menu{
-    -fx-background-color: #006074;
+    -fx-background-color: #3E3F43;
 }
+
+.menu-item:hover, menu-item:focus{
+    -fx-background-color: #69757A;
+}
+
 
 .tab-pane .tab-header-background{
     -fx-background-color: #474747;
+}
+
+.tab-header-background {
+    -fx-background-color: #3e3e3e;
 }
 
 .scroll-pane > .viewport {
@@ -19,21 +60,17 @@
     -fx-background-color: transparent;
 }
 
-#menu-bar {
-    -fx-background-color: #006074;
-}
-
 #main-content > .split-pane-divider {
     -fx-pref-width: 2px;
-    -fx-background-color: #4e4e4e;
+    -fx-background-color: #2d2e32;
 }
 
 #main-content{
     -fx-border-width: 0;
-    -fx-background-color: #585858;
+    -fx-background-color: #2d2e32;
 }
 
 #right-side-menu{
-    -fx-border-width: 0;
-    -fx-background-color: #585858;
+    -fx-background-insets: 0;
+    -fx-background-color: #3e3e3e;
 }

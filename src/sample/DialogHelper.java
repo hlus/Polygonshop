@@ -1,5 +1,6 @@
 package sample;
 
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -16,11 +17,11 @@ public class DialogHelper {
         return alert;
     }
 
-    public static Dialog<String[]> getCreateNewDialog() {
+    public static Dialog<String[]> getCreateNewDialog(String style) {
         // Create the custom dialog.
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("Create new file");
-        dialog.setHeaderText("Set the options");
+        //dialog.setHeaderText("Set the options");
 
         // Set the icon (must be included in the project).
         // dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
@@ -35,14 +36,11 @@ public class DialogHelper {
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-        TextField fileName = new TextField();
-        fileName.setText("Untitled");
+        JFXTextField fileName = new JFXTextField("Untitled");
 
-        TextField canvasWidth = new TextField();
-        canvasWidth.setText("800");
+        JFXTextField canvasWidth = new JFXTextField("800");
 
-        TextField canvasHeight = new TextField();
-        canvasHeight.setText("600");
+        JFXTextField canvasHeight = new JFXTextField("600");
 
         grid.add(new Label("Name:"), 0, 0);
         grid.add(fileName, 1, 0);
@@ -61,6 +59,9 @@ public class DialogHelper {
         dialog.setResultConverter(dialogButton -> dialogButton == createButtonType ?
                 new String[]{fileName.getText(), canvasWidth.getText(), canvasHeight.getText()} :
                 null);
+
+        dialog.getDialogPane().getStylesheets().add(style);
+        dialog.getDialogPane().getStyleClass().add("main");
 
         return dialog;
     }
