@@ -35,11 +35,11 @@
     -fx-text-fill: #EAEAEA;
 }
 
-.menu, .menu-item, .context-menu{
+.menu-item, .context-menu{
     -fx-background-color: #3E3F43;
 }
 
-.menu-item:hover, menu-item:focus{
+.menu:hover, .menu-item:hover, menu-item:focus{
     -fx-background-color: #69757A;
 }
 

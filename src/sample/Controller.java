@@ -1,5 +1,6 @@
 package sample;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -26,10 +28,13 @@ public class Controller {
     @FXML
     Menu MIEdit;
 
+    // Main content
     @FXML
     JFXTabPane TPPolygonFiles;
+
+    // Controls
     @FXML
-    Button BAddPoints, BBuildPolygon, BRemovePolygon;
+    JFXButton BBuildPolygon, BClearPolygon, BTriangulate, BTriangulateInfo;
 
     private HashMap<Integer, UIPolygon> tabs;
     private Integer selectedTab;
@@ -38,18 +43,16 @@ public class Controller {
     public void initialize() {
         selectedTab = null;
         tabs = new HashMap();
-        renderUI();
+        renderAllUI();
+
         // set event on change tabs ...
         TPPolygonFiles.getSelectionModel().selectedItemProperty().addListener((obs, prev, selected) -> {
             selectedTab = selected != null ? selected.hashCode() : null;
-            renderUI();
-            //System.out.println(obs);
-            //System.out.println("Prev: " + prev);
-            //System.out.println("Selected: " + selected.hashCode());
+            renderAllUI();
         });
     }
 
-    private void renderUIElements() {
+    private void renderAllUIElements() {
 
     }
 
@@ -83,23 +86,43 @@ public class Controller {
         }
     }
 
-    private void renderUI() {
+    private void renderAllUI() {
+        renderMenu();
+        renderRightSideMenu();
+    }
+
+    private void renderMenu() {
         boolean tabsExists = tabs.size() != 0;
         MISave.setDisable(!tabsExists);
         MISaveAs.setDisable(!tabsExists);
         MIEdit.setDisable(!tabsExists);
-
-        boolean polygonSelected = selectedTab != null;
-        BAddPoints.setDisable(!polygonSelected);
-        BBuildPolygon.setDisable(!polygonSelected);
-        BRemovePolygon.setDisable(!polygonSelected);
     }
+
+    private void renderRightSideMenu() {
+        // Default disable all right menu
+        BBuildPolygon.setText("Build polygon");
+        BBuildPolygon.setDisable(true);
+        BClearPolygon.setDisable(true);
+        BTriangulate.setDisable(true);
+        BTriangulateInfo.setDisable(true);
+        if (selectedTab != null) {
+            UIPolygon polygonUI = tabs.get(selectedTab);
+            if (!polygonUI.isBuilt()) {
+                BBuildPolygon.setDisable(false);
+                BBuildPolygon.setText(polygonUI.isBuilding() ? "Finish building" : "Build polygon");
+            } else {
+                BClearPolygon.setDisable(false);
+            }
+        }
+    }
+
 
     @FXML
     private void onCreateNewFile() {
         Dialog createDialog = DialogHelper.getCreateNewDialog(this.getClass().getResource("main.css").toExternalForm());
         createDialog.initOwner(TPPolygonFiles.getScene().getWindow());
         Optional<String[]> result = createDialog.showAndWait();
+
         result.ifPresent(res -> {
             String fileName = res[0];
             double width = Double.parseDouble(res[1]);
@@ -112,11 +135,7 @@ public class Controller {
             );
 
             Tab newTab = polygonTab.getTab();
-            newTab.setOnCloseRequest(e -> {
-                System.out.println("I close the: " + newTab.hashCode());
-                tabs.remove(newTab.hashCode());
-                renderUI();
-            });
+            newTab.setOnCloseRequest(e -> onCloseTab(newTab.hashCode()));
 
             tabs.put(newTab.hashCode(), polygonTab);
             // add new Tab at the front
@@ -124,6 +143,12 @@ public class Controller {
             // select this tab
             TPPolygonFiles.getSelectionModel().select(0);
         });
+    }
+
+    private void onCloseTab(int tabHashCode) {
+        selectedTab = null;
+        tabs.remove(tabHashCode);
+        renderAllUI();
     }
 
     @FXML
@@ -137,5 +162,23 @@ public class Controller {
     @FXML
     private void onExit() {
         ((Stage) TPPolygonFiles.getScene().getWindow()).close();
+    }
+
+    public void onBuildPolygon(ActionEvent actionEvent) {
+        UIPolygon polygonUI = tabs.get(selectedTab);
+        polygonUI.onBuildOrEndBuilt();
+        renderRightSideMenu();
+    }
+
+    public void onClearPolygon(ActionEvent actionEvent) {
+        UIPolygon polygonUI = tabs.get(selectedTab);
+        polygonUI.onClearPolygon();
+        renderRightSideMenu();
+    }
+
+    public void onTriangulatePolygon(ActionEvent actionEvent) {
+    }
+
+    public void onTriangulateInfo(ActionEvent actionEvent) {
     }
 }
