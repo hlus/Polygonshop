@@ -1,11 +1,10 @@
 package sample;
 
-import javafx.geometry.Point2D;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Polygon {
+public class Polygon implements Serializable{
 
     private List<Point2D> points;
 

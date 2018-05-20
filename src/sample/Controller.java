@@ -9,10 +9,14 @@ import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.plaf.basic.BasicButtonUI;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -116,6 +120,15 @@ public class Controller {
         }
     }
 
+    private void addNewTab(Tab tab, UIPolygon polygonUI){
+        tab.setOnCloseRequest(e -> onCloseTab(tab.hashCode()));
+
+        tabs.put(tab.hashCode(), polygonUI);
+        // add new Tab at the front
+        TPPolygonFiles.getTabs().add(0, tab);
+        // select this tab
+        TPPolygonFiles.getSelectionModel().select(0);
+    }
 
     @FXML
     private void onCreateNewFile() {
@@ -133,15 +146,7 @@ public class Controller {
                     width,
                     height
             );
-
-            Tab newTab = polygonTab.getTab();
-            newTab.setOnCloseRequest(e -> onCloseTab(newTab.hashCode()));
-
-            tabs.put(newTab.hashCode(), polygonTab);
-            // add new Tab at the front
-            TPPolygonFiles.getTabs().add(0, newTab);
-            // select this tab
-            TPPolygonFiles.getSelectionModel().select(0);
+            addNewTab(polygonTab.getTab(), polygonTab);
         });
     }
 
@@ -151,8 +156,40 @@ public class Controller {
         renderAllUI();
     }
 
+
     @FXML
     private void onOpenFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Polygon");
+        fileChooser.setInitialDirectory(new File("."));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Polygon files (*.pol)", "*.pol"));
+        File file = fileChooser.showOpenDialog(TPPolygonFiles.getScene().getWindow());
+        try{
+            UIPolygon newPolygon = new UIPolygon(file);
+            addNewTab(newPolygon.getTab(), newPolygon);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void onSave(ActionEvent actionEvent) {
+        UIPolygon polygonUI = tabs.get(selectedTab);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Polygon");
+        fileChooser.setInitialFileName(polygonUI.getFileName() + ".pol");
+        fileChooser.setInitialDirectory(new File("."));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Polygon files (*.pol)", "*.pol"));
+        File file = fileChooser.showSaveDialog(TPPolygonFiles.getScene().getWindow());
+        if (file != null) {
+            try {
+                polygonUI.onSave(file);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public void onSaveAs(ActionEvent actionEvent) {
     }
 
     @FXML
@@ -181,4 +218,6 @@ public class Controller {
 
     public void onTriangulateInfo(ActionEvent actionEvent) {
     }
+
+
 }
