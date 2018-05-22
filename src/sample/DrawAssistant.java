@@ -19,10 +19,16 @@ public class DrawAssistant {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
-    public static void drawDefaultLine(Canvas canvas, Point2D a, Point2D b){
+    public static void drawDefaultLine(Canvas canvas, Point2D a, Point2D b) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
         gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
+    }
+
+    public static void drawText(Canvas canvas, String text, Point2D point) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setStroke(Color.BLACK);
+        gc.strokeText(text, point.getX(), point.getY());
     }
 
 }

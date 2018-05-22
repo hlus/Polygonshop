@@ -145,9 +145,11 @@ public class UIPolygon implements Serializable {
         DrawAssistant.fillCanvas(canvas, Color.GRAY);
         List<Point2D> points = polygon.getPoints();
         for (int i = 0; i < points.size() - 1; i++) {
+            DrawAssistant.drawText(canvas, "V" + i, points.get(i));
             DrawAssistant.drawDefaultPoint(canvas, points.get(i));
             DrawAssistant.drawDefaultLine(canvas, points.get(i), points.get(i + 1));
         }
+        DrawAssistant.drawText(canvas, "V" + (points.size() - 1), points.get(points.size() - 1));
         DrawAssistant.drawDefaultPoint(canvas, points.get(points.size() - 1));
         DrawAssistant.drawDefaultLine(canvas, points.get(0), points.get(points.size() - 1));
     }
