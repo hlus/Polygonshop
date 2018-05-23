@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -99,7 +100,6 @@ public class Controller {
     private void renderMenu() {
         boolean tabsExists = tabs.size() != 0;
         MISave.setDisable(!tabsExists);
-
         MIEdit.setDisable(!tabsExists);
     }
 
@@ -183,11 +183,11 @@ public class Controller {
                 UIPolygon newPolygon = new UIPolygon((UIPolygon) objIn.readObject());
                 addNewTab(newPolygon.getTab(), newPolygon);
             } catch (IOException i) {
-                showErrorMessage(i);
+                showErrorMessage(i.getMessage());
             } catch (ClassNotFoundException c) {
-                showErrorMessage(c);
+                showErrorMessage("Wrong file!!!");
             } catch (Exception e) {
-                showErrorMessage(e);
+                showErrorMessage(e.getMessage());
             }
         }
     }
@@ -200,16 +200,17 @@ public class Controller {
                 try {
                     polygonUI.onSave(file);
                 } catch (Exception e) {
-                    showErrorMessage(e);
+                    showErrorMessage(e.getMessage());
                 }
             }
         } else {
-            showErrorMessage(new Exception("You are not select a file!"));
+            showErrorMessage("You are not select a file!");
         }
     }
 
     @FXML
     private void onShowAbout() {
+        throw new NotImplementedException();
     }
 
     @FXML
@@ -223,7 +224,7 @@ public class Controller {
         try {
             polygonUI.onBuildOrEndBuilt();
         } catch (Exception e) {
-            showErrorMessage(e);
+            showErrorMessage(e.getMessage());
         }
         renderRightSideMenu();
     }
@@ -240,8 +241,8 @@ public class Controller {
     public void onTriangulateInfo(ActionEvent actionEvent) {
     }
 
-    private void showErrorMessage(Exception err) {
-        Alert errorDialog = DialogHelper.getErrorDialog(this.style, err);
+    private void showErrorMessage(String errMsg) {
+        Alert errorDialog = DialogHelper.getErrorDialog(this.style, errMsg);
         errorDialog.initOwner(TPPolygonFiles.getScene().getWindow());
         errorDialog.showAndWait();
     }

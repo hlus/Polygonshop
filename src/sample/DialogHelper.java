@@ -8,15 +8,15 @@ import javafx.scene.layout.GridPane;
 
 public class DialogHelper {
 
-    public static Alert getErrorDialog(String style, Exception ex) {
+    public static Alert getErrorDialog(String style, String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setContentText(ex.getMessage());
+        alert.setContentText(msg);
         alert.getDialogPane().getStylesheets().add(style);
         return alert;
     }
 
-    public static Alert getConfirmSaveDialog(String style){
+    public static Alert getConfirmSaveDialog(String style) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close polygon");
         alert.setHeaderText("Look carefully, you closed the polygon!");
