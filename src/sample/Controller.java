@@ -7,21 +7,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import javafx.stage.Window;
 
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Optional;
-
-import static javafx.scene.input.KeyCode.*;
-
 
 public class Controller {
 
@@ -120,7 +116,7 @@ public class Controller {
         }
     }
 
-    private void addNewTab(Tab tab, UIPolygon polygonUI){
+    private void addNewTab(Tab tab, UIPolygon polygonUI) {
         tab.setOnCloseRequest(e -> onCloseTab(tab.hashCode()));
 
         tabs.put(tab.hashCode(), polygonUI);
@@ -156,30 +152,39 @@ public class Controller {
         renderAllUI();
     }
 
+    private File createAndShowFileChooser(String type, String initialFileName) {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(type);
+        chooser.setInitialDirectory(new File("."));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Polygon files (*.pol)", "*.pol"));
+        chooser.setInitialFileName(initialFileName);
+        Window ownerWindow = TPPolygonFiles.getScene().getWindow();
+        return type.contains("Save") ?
+                chooser.showSaveDialog(ownerWindow) :
+                chooser.showOpenDialog(ownerWindow);
+    }
 
     @FXML
     private void onOpenFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Polygon");
-        fileChooser.setInitialDirectory(new File("."));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Polygon files (*.pol)", "*.pol"));
-        File file = fileChooser.showOpenDialog(TPPolygonFiles.getScene().getWindow());
-        try{
-            UIPolygon newPolygon = new UIPolygon(file);
-            addNewTab(newPolygon.getTab(), newPolygon);
-        }catch (Exception e){
-            System.out.println(e);
+        File file = createAndShowFileChooser("Open Polygon", "");
+        if (file != null) {
+            try (ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(file))) {
+                UIPolygon newPolygon = new UIPolygon((UIPolygon) objIn.readObject());
+                addNewTab(newPolygon.getTab(), newPolygon);
+            } catch (IOException i) {
+                i.printStackTrace();
+            } catch (ClassNotFoundException c) {
+                System.out.println("Employee class not found");
+                c.printStackTrace();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
     public void onSave(ActionEvent actionEvent) {
         UIPolygon polygonUI = tabs.get(selectedTab);
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Polygon");
-        fileChooser.setInitialFileName(polygonUI.getFileName() + ".pol");
-        fileChooser.setInitialDirectory(new File("."));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Polygon files (*.pol)", "*.pol"));
-        File file = fileChooser.showSaveDialog(TPPolygonFiles.getScene().getWindow());
+        File file = createAndShowFileChooser("Save Polygon", polygonUI.getFileName());
         if (file != null) {
             try {
                 polygonUI.onSave(file);

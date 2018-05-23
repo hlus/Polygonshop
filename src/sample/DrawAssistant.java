@@ -25,10 +25,10 @@ public class DrawAssistant {
         gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
     }
 
-    public static void drawText(Canvas canvas, String text, Point2D point) {
+    public static void drawText(Canvas canvas, String text, Point2D point, double shift) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
-        gc.strokeText(text, point.getX(), point.getY());
+        gc.strokeText(text, point.getX(), point.getY()+shift);
     }
 
 }

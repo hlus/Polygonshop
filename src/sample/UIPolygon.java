@@ -19,6 +19,10 @@ public class UIPolygon implements Serializable {
     private double width;
     private double height;
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName.replace(".pol", "");
+    }
+
     public double getWidth() {
         return width;
     }
@@ -54,8 +58,15 @@ public class UIPolygon implements Serializable {
         return isTriangulate;
     }
 
+    public UIPolygon(UIPolygon p) {
+        this(p.getFileName(), p.getWidth(), p.getHeight());
+        this.polygon = p.getPolygon();
+        redrawPolygon();
+    }
+
+
     public UIPolygon(String fileName, double width, double height) {
-        this.fileName = fileName;
+        setFileName(fileName);
         isTriangulate = false;
         this.width = width;
         this.height = height;
@@ -72,51 +83,15 @@ public class UIPolygon implements Serializable {
         DrawAssistant.fillCanvas(canvas, Color.GRAY);
     }
 
-    public UIPolygon(File file) {
-        try {
-            FileInputStream fileIn = new FileInputStream(file);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            UIPolygon pol = (UIPolygon) in.readObject();
-
-            this.polygon = pol.getPolygon();
-            this.width = pol.getWidth();
-            this.height = pol.getHeight();
-            this.fileName = pol.getFileName();
-            isTriangulate = false;
-
-            canvas = new Canvas(width, height);
-            canvas.setOnMouseClicked(e -> {
-                if (isBuilding()) {
-                    Point2D clickPoint = new Point2D(e.getX(), e.getY());
-                    DrawAssistant.drawDefaultPoint(canvas, clickPoint);
-                    buildPoints.add(clickPoint);
-                }
-            });
-            in.close();
-            fileIn.close();
-
-            DrawAssistant.fillCanvas(canvas, Color.GRAY);
-            redrawPolygon();
-        } catch (IOException i) {
-            i.printStackTrace();
-            return;
-        } catch (ClassNotFoundException c) {
-            System.out.println("Employee class not found");
-            c.printStackTrace();
-            return;
-        }
-    }
-
     public void onSave(File file) {
         try {
-            fileName = file.getName();
+            setFileName(file.getName());
             FileOutputStream fileOut = new FileOutputStream(file.getPath());
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
             out.close();
             fileOut.close();
             tab.setText(fileName);
-            System.out.printf("Serialized data is saved in " + file.getPath());
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -143,15 +118,17 @@ public class UIPolygon implements Serializable {
 
     private void redrawPolygon() {
         DrawAssistant.fillCanvas(canvas, Color.GRAY);
-        List<Point2D> points = polygon.getPoints();
-        for (int i = 0; i < points.size() - 1; i++) {
-            DrawAssistant.drawText(canvas, "V" + i, points.get(i));
-            DrawAssistant.drawDefaultPoint(canvas, points.get(i));
-            DrawAssistant.drawDefaultLine(canvas, points.get(i), points.get(i + 1));
+        if (polygon != null && polygon.getPoints().size() != 0) {
+            List<Point2D> points = polygon.getPoints();
+            for (int i = 0; i < points.size() - 1; i++) {
+                DrawAssistant.drawText(canvas, "V" + i, points.get(i), 10);
+                DrawAssistant.drawDefaultPoint(canvas, points.get(i));
+                DrawAssistant.drawDefaultLine(canvas, points.get(i), points.get(i + 1));
+            }
+            DrawAssistant.drawText(canvas, "V" + (points.size() - 1), points.get(points.size() - 1), 10);
+            DrawAssistant.drawDefaultPoint(canvas, points.get(points.size() - 1));
+            DrawAssistant.drawDefaultLine(canvas, points.get(0), points.get(points.size() - 1));
         }
-        DrawAssistant.drawText(canvas, "V" + (points.size() - 1), points.get(points.size() - 1));
-        DrawAssistant.drawDefaultPoint(canvas, points.get(points.size() - 1));
-        DrawAssistant.drawDefaultLine(canvas, points.get(0), points.get(points.size() - 1));
     }
 
     public void onClearPolygon() {
