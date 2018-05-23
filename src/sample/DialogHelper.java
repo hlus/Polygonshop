@@ -6,8 +6,23 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+/**
+ * This class just generate dialogs
+ * and have only static methods
+ *
+ * @author hlus
+ * @version 2.0
+ */
 public class DialogHelper {
 
+    /**
+     * This static method which generate Error Alert
+     *
+     * @param style String variable which describe style (.css)
+     * @param msg   String which set to content text
+     * @return Alert (with Error title)
+     * @see Controller#style
+     */
     public static Alert getErrorDialog(String style, String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -16,6 +31,13 @@ public class DialogHelper {
         return alert;
     }
 
+    /**
+     * This static method which generate confirmation Alert
+     *
+     * @param style String variable which describe style (.css)
+     * @return Alert (with 'Close polygon' title)
+     * @see Controller#style
+     */
     public static Alert getConfirmSaveDialog(String style) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close polygon");
@@ -25,6 +47,18 @@ public class DialogHelper {
         return alert;
     }
 
+    /**
+     * This static method which generate dialog
+     * where is ask some options for create new 'polygon file'
+     *
+     * @param style String variable which describe style (.css)
+     * @return Dialog which result string array (fileName, width, height)
+     * @see UIPolygon
+     * @see UIPolygon#fileName
+     * @see UIPolygon#width
+     * @see UIPolygon#height
+     * @see Controller#style
+     */
     public static Dialog<String[]> getCreateNewDialog(String style) {
         // Create the custom dialog.
         Dialog<String[]> dialog = new Dialog<>();

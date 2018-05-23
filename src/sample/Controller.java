@@ -22,6 +22,7 @@ import java.util.Optional;
 /**
  * Controller for sample.fxml view
  *
+ * @author hlus
  * @version 2.0
  */
 public class Controller {
@@ -309,6 +310,7 @@ public class Controller {
     // -----------------------------------------------------------------------------
 
     // --------------------------- CONTROLLER LOGIC --------------------------------
+
     /**
      * Method add new tab to the tabs property
      * and focused user on this tab
