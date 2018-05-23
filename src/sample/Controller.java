@@ -36,6 +36,8 @@ public class Controller {
     @FXML
     JFXButton BBuildPolygon, BClearPolygon, BTriangulate, BTriangulateInfo;
 
+    private String style;
+
     private HashMap<Integer, UIPolygon> tabs;
     private Integer selectedTab;
 
@@ -43,6 +45,7 @@ public class Controller {
     public void initialize() {
         selectedTab = null;
         tabs = new HashMap();
+        style = this.getClass().getResource("main.css").toExternalForm();
         renderAllUI();
 
         // set event on change tabs ...
@@ -128,7 +131,7 @@ public class Controller {
 
     @FXML
     private void onCreateNewFile() {
-        Dialog createDialog = DialogHelper.getCreateNewDialog(this.getClass().getResource("main.css").toExternalForm());
+        Dialog createDialog = DialogHelper.getCreateNewDialog(this.style);
         createDialog.initOwner(TPPolygonFiles.getScene().getWindow());
         Optional<String[]> result = createDialog.showAndWait();
 
@@ -147,6 +150,11 @@ public class Controller {
     }
 
     private void onCloseTab(int tabHashCode) {
+        // TODO : add handler on save changes ...
+        Optional<ButtonType> result = DialogHelper.getConfirmSaveDialog(this.style).showAndWait();
+        if (result.get() == ButtonType.OK){
+            onSave(null);
+        }
         selectedTab = null;
         tabs.remove(tabHashCode);
         renderAllUI();

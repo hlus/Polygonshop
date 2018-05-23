@@ -1,6 +1,6 @@
-# Idea files
-/.idea/
-/.out/
+# IntelliJ
+out/
+.idea/
 
 
 # Compiled class file
