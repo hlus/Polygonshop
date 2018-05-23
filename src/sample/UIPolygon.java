@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * class which describe UI part of polygon
+ * Class which describe UI part of polygon
  *
  * @author hlus
  * @version 2.0
@@ -135,6 +135,7 @@ public class UIPolygon implements Serializable {
 
     /**
      * Constructor for class UIPolygon
+     *
      * @param fileName file name of our polygon file
      * @param width    width of canvas
      * @param height   height of canvas
@@ -163,6 +164,7 @@ public class UIPolygon implements Serializable {
 
     /**
      * This method serialize the polygon file.
+     *
      * @param file this argument need for get a name of save file and path to save
      * @throws Exception path can be wrong !!!
      */
@@ -181,6 +183,7 @@ public class UIPolygon implements Serializable {
     /**
      * This method call when we wanna begin building
      * of our polygon, or when end building polygon.
+     *
      * @throws Exception
      */
     public void onBuildOrEndBuilt() throws Exception {
