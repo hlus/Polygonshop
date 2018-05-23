@@ -106,8 +106,13 @@ public class UIPolygon implements Serializable {
         return tab;
     }
 
-    public void onBuildOrEndBuilt() {
+    public void onBuildOrEndBuilt() throws Exception {
         if (isBuilding()) {
+            if (buildPoints.size() < 3){
+                buildPoints = null;
+                redrawPolygon();
+                throw new Exception("You added not enough points to build a polygon!");
+            }
             polygon = new Polygon(buildPoints);
             buildPoints = null;
             redrawPolygon();

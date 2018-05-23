@@ -24,7 +24,7 @@ public class Controller {
 
     // Menu Items
     @FXML
-    MenuItem MISave, MISaveAs;
+    MenuItem MISave;
     @FXML
     Menu MIEdit;
 
@@ -77,6 +77,8 @@ public class Controller {
                     case O:
                         onOpenFile();
                         break;
+                    case S:
+                        onSave(null);
                     case A:
                         onShowAbout();
                         break;
@@ -97,7 +99,7 @@ public class Controller {
     private void renderMenu() {
         boolean tabsExists = tabs.size() != 0;
         MISave.setDisable(!tabsExists);
-        MISaveAs.setDisable(!tabsExists);
+
         MIEdit.setDisable(!tabsExists);
     }
 
@@ -191,18 +193,19 @@ public class Controller {
     }
 
     public void onSave(ActionEvent actionEvent) {
-        UIPolygon polygonUI = tabs.get(selectedTab);
-        File file = createAndShowFileChooser("Save Polygon", polygonUI.getFileName());
-        if (file != null) {
-            try {
-                polygonUI.onSave(file);
-            } catch (Exception e) {
-                showErrorMessage(e);
+        if (selectedTab != null) {
+            UIPolygon polygonUI = tabs.get(selectedTab);
+            File file = createAndShowFileChooser("Save Polygon", polygonUI.getFileName());
+            if (file != null) {
+                try {
+                    polygonUI.onSave(file);
+                } catch (Exception e) {
+                    showErrorMessage(e);
+                }
             }
+        } else {
+            showErrorMessage(new Exception("You are not select a file!"));
         }
-    }
-
-    public void onSaveAs(ActionEvent actionEvent) {
     }
 
     @FXML
@@ -211,12 +214,17 @@ public class Controller {
 
     @FXML
     private void onExit() {
+        // TODO : Add handle if tabs.size() != 0 ask fow save polygons
         ((Stage) TPPolygonFiles.getScene().getWindow()).close();
     }
 
     public void onBuildPolygon(ActionEvent actionEvent) {
         UIPolygon polygonUI = tabs.get(selectedTab);
-        polygonUI.onBuildOrEndBuilt();
+        try {
+            polygonUI.onBuildOrEndBuilt();
+        } catch (Exception e) {
+            showErrorMessage(e);
+        }
         renderRightSideMenu();
     }
 
