@@ -2,7 +2,6 @@ package sample;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -20,28 +19,59 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Optional;
 
+/**
+ * Controller for sample.fxml view
+ *
+ * @version 2.0
+ */
 public class Controller {
 
-
-    // Menu Items
+    /**
+     * Binding menu items
+     */
     @FXML
     MenuItem MISave;
     @FXML
     Menu MIEdit;
 
-    // Main content
+    /**
+     * Binding TabPane node
+     */
     @FXML
     JFXTabPane TPPolygonFiles;
 
-    // Controls
+    /**
+     * Binding right-side menu buttons
+     */
     @FXML
     JFXButton BBuildPolygon, BClearPolygon, BTriangulate, BTriangulateInfo;
 
+    /**
+     * Property which contain style string
+     * for dialogs windows
+     */
     private String style;
 
+    /**
+     * Property which contain all tabs
+     * tabs - contain:
+     * key -> hashcode of tab UIPolygon (getTab().hashCode())
+     * value -> UIPolygon object
+     *
+     * @see UIPolygon
+     * @see UIPolygon#getTab()
+     * @see Tab#hashCode()
+     */
     private HashMap<Integer, UIPolygon> tabs;
+    /**
+     * Property which contain hashcode of selected tab
+     */
     private Integer selectedTab;
 
+    /**
+     * Initialize method call firstly
+     * And initialize properties with initial values
+     */
     @FXML
     public void initialize() {
         selectedTab = null;
@@ -54,10 +84,6 @@ public class Controller {
             selectedTab = selected != null ? selected.hashCode() : null;
             renderAllUI();
         });
-    }
-
-    private void renderAllUIElements() {
-
     }
 
     /**
@@ -79,7 +105,7 @@ public class Controller {
                         onOpenFile();
                         break;
                     case S:
-                        onSave(null);
+                        onSave();
                     case A:
                         onShowAbout();
                         break;
@@ -92,17 +118,29 @@ public class Controller {
         }
     }
 
+    // -------------------------------- RENDER UI ----------------------------------
+
+    /**
+     * Method which render UI elements
+     * namely top menu, and right-side menu
+     */
     private void renderAllUI() {
         renderMenu();
         renderRightSideMenu();
     }
 
+    /**
+     * Method which render top menu UI elements
+     */
     private void renderMenu() {
         boolean tabsExists = tabs.size() != 0;
         MISave.setDisable(!tabsExists);
         MIEdit.setDisable(!tabsExists);
     }
 
+    /**
+     * Method which render right-side menu UI elements
+     */
     private void renderRightSideMenu() {
         // Default disable all right menu
         BBuildPolygon.setText("Build polygon");
@@ -121,16 +159,13 @@ public class Controller {
         }
     }
 
-    private void addNewTab(Tab tab, UIPolygon polygonUI) {
-        tab.setOnCloseRequest(e -> onCloseTab(tab.hashCode()));
+    // -----------------------------------------------------------------------------
 
-        tabs.put(tab.hashCode(), polygonUI);
-        // add new Tab at the front
-        TPPolygonFiles.getTabs().add(0, tab);
-        // select this tab
-        TPPolygonFiles.getSelectionModel().select(0);
-    }
+    // ----------------------------- TOP MENU HANDLERS -----------------------------
 
+    /**
+     * Binding method handle on click create new file
+     */
     @FXML
     private void onCreateNewFile() {
         Dialog createDialog = DialogHelper.getCreateNewDialog(this.style);
@@ -151,30 +186,14 @@ public class Controller {
         });
     }
 
-    private void onCloseTab(int tabHashCode) {
-        Alert confirmDialog = DialogHelper.getConfirmSaveDialog(this.style);
-        confirmDialog.initOwner(TPPolygonFiles.getScene().getWindow());
-        Optional<ButtonType> result = confirmDialog.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            onSave(null);
-        }
-        selectedTab = null;
-        tabs.remove(tabHashCode);
-        renderAllUI();
-    }
-
-    private File createAndShowFileChooser(String type, String initialFileName) {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle(type);
-        chooser.setInitialDirectory(new File("."));
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Polygon files (*.pol)", "*.pol"));
-        chooser.setInitialFileName(initialFileName);
-        Window ownerWindow = TPPolygonFiles.getScene().getWindow();
-        return type.contains("Save") ?
-                chooser.showSaveDialog(ownerWindow) :
-                chooser.showOpenDialog(ownerWindow);
-    }
-
+    /**
+     * This method is binding when user click
+     * to open some file.
+     * method deserialize file and create UIPolygon object,
+     * and add him to tabs
+     *
+     * @see Controller#tabs
+     */
     @FXML
     private void onOpenFile() {
         File file = createAndShowFileChooser("Open Polygon", "");
@@ -192,7 +211,14 @@ public class Controller {
         }
     }
 
-    public void onSave(ActionEvent actionEvent) {
+    /**
+     * This method is binding when user click
+     * to open some file.
+     * method deserialize file and create UIPolygon object,
+     * and add him to tabs
+     */
+    @FXML
+    private void onSave() {
         if (selectedTab != null) {
             UIPolygon polygonUI = tabs.get(selectedTab);
             File file = createAndShowFileChooser("Save Polygon", polygonUI.getFileName());
@@ -208,18 +234,39 @@ public class Controller {
         }
     }
 
-    @FXML
-    private void onShowAbout() {
-        throw new NotImplementedException();
-    }
-
+    /**
+     * This method is handle when user click on Exit
+     */
     @FXML
     private void onExit() {
         // TODO : Add handle if tabs.size() != 0 ask fow save polygons
         ((Stage) TPPolygonFiles.getScene().getWindow()).close();
     }
 
-    public void onBuildPolygon(ActionEvent actionEvent) {
+    /**
+     * This method show about information for user
+     */
+    @FXML
+    private void onShowAbout() {
+        // TODO : add about page implementation
+        throw new NotImplementedException();
+    }
+
+    // -----------------------------------------------------------------------------
+
+
+    // ------------------------- RIGHT-SIDE MENU HANDLERS --------------------------
+
+    /**
+     * This method handler on click BuildPolygon,
+     * call onBuildOrEndBuilt() method of UIPolygon
+     * selected object
+     *
+     * @see UIPolygon
+     * @see UIPolygon#onBuildOrEndBuilt()
+     */
+    @FXML
+    private void onBuildPolygon() {
         UIPolygon polygonUI = tabs.get(selectedTab);
         try {
             polygonUI.onBuildOrEndBuilt();
@@ -229,21 +276,106 @@ public class Controller {
         renderRightSideMenu();
     }
 
-    public void onClearPolygon(ActionEvent actionEvent) {
+    /**
+     * This method handler on click Clear polygon,
+     * call onClearPolygon() method of UIPolygon
+     * selected object
+     */
+    @FXML
+    private void onClearPolygon() {
         UIPolygon polygonUI = tabs.get(selectedTab);
         polygonUI.onClearPolygon();
         renderRightSideMenu();
     }
 
-    public void onTriangulatePolygon(ActionEvent actionEvent) {
+    /**
+     * Not implemented yet
+     */
+    @FXML
+    private void onTriangulatePolygon() {
+        // TODO : implement click on Triangulate
+        throw new NotImplementedException();
     }
 
-    public void onTriangulateInfo(ActionEvent actionEvent) {
+    /**
+     * Not implemented yet
+     */
+    @FXML
+    public void onTriangulateInfo() {
+        // TODO : implement click on triangulate info
+        throw new NotImplementedException();
     }
 
+    // -----------------------------------------------------------------------------
+
+    // --------------------------- CONTROLLER LOGIC --------------------------------
+    /**
+     * Method add new tab to the tabs property
+     * and focused user on this tab
+     *
+     * @param tab       tab to add
+     * @param polygonUI of this tab
+     * @see Controller#tabs
+     */
+    private void addNewTab(Tab tab, UIPolygon polygonUI) {
+        tab.setOnCloseRequest(e -> onCloseTab(tab.hashCode()));
+
+        tabs.put(tab.hashCode(), polygonUI);
+        // add new Tab at the front
+        TPPolygonFiles.getTabs().add(0, tab);
+        // select this tab
+        TPPolygonFiles.getSelectionModel().select(0);
+    }
+
+    /**
+     * This method is handle when some tab is close ...
+     *
+     * @param tabHashCode hashcode of tab which be closed
+     * @see Controller#addNewTab(Tab, UIPolygon)
+     */
+    private void onCloseTab(int tabHashCode) {
+        Alert confirmDialog = DialogHelper.getConfirmSaveDialog(this.style);
+        confirmDialog.initOwner(TPPolygonFiles.getScene().getWindow());
+        Optional<ButtonType> result = confirmDialog.showAndWait();
+        if (result.get() == ButtonType.OK)
+            onSave();
+
+        selectedTab = null;
+        tabs.remove(tabHashCode);
+        renderAllUI();
+    }
+
+    /**
+     * This method create and show some file choose
+     * which set default options, end recognize type
+     * for show save or open file dialog
+     *
+     * @param type            string for recognize save or open file dialog
+     * @param initialFileName string for set initial file name
+     * @return File object
+     */
+    private File createAndShowFileChooser(String type, String initialFileName) {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(type);
+        chooser.setInitialDirectory(new File("."));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Polygon files (*.pol)", "*.pol"));
+        chooser.setInitialFileName(initialFileName);
+        Window ownerWindow = TPPolygonFiles.getScene().getWindow();
+        return type.contains("Save") ?
+                chooser.showSaveDialog(ownerWindow) :
+                chooser.showOpenDialog(ownerWindow);
+    }
+
+    /**
+     * This method show error message to user
+     *
+     * @param errMsg
+     */
     private void showErrorMessage(String errMsg) {
         Alert errorDialog = DialogHelper.getErrorDialog(this.style, errMsg);
         errorDialog.initOwner(TPPolygonFiles.getScene().getWindow());
         errorDialog.showAndWait();
     }
+
+    // -----------------------------------------------------------------------------
 }

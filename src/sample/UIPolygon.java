@@ -13,7 +13,7 @@ import java.util.List;
  * class which describe UI part of polygon
  *
  * @author hlus
- * @version 2.0.0
+ * @version 2.0
  */
 public class UIPolygon implements Serializable {
 
