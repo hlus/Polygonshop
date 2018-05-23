@@ -150,9 +150,10 @@ public class Controller {
     }
 
     private void onCloseTab(int tabHashCode) {
-        // TODO : add handler on save changes ...
-        Optional<ButtonType> result = DialogHelper.getConfirmSaveDialog(this.style).showAndWait();
-        if (result.get() == ButtonType.OK){
+        Alert confirmDialog = DialogHelper.getConfirmSaveDialog(this.style);
+        confirmDialog.initOwner(TPPolygonFiles.getScene().getWindow());
+        Optional<ButtonType> result = confirmDialog.showAndWait();
+        if (result.get() == ButtonType.OK) {
             onSave(null);
         }
         selectedTab = null;
@@ -180,12 +181,11 @@ public class Controller {
                 UIPolygon newPolygon = new UIPolygon((UIPolygon) objIn.readObject());
                 addNewTab(newPolygon.getTab(), newPolygon);
             } catch (IOException i) {
-                i.printStackTrace();
+                showErrorMessage(i);
             } catch (ClassNotFoundException c) {
-                System.out.println("Employee class not found");
-                c.printStackTrace();
+                showErrorMessage(c);
             } catch (Exception e) {
-                System.out.println(e);
+                showErrorMessage(e);
             }
         }
     }
@@ -196,8 +196,8 @@ public class Controller {
         if (file != null) {
             try {
                 polygonUI.onSave(file);
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+            } catch (Exception e) {
+                showErrorMessage(e);
             }
         }
     }
@@ -232,5 +232,9 @@ public class Controller {
     public void onTriangulateInfo(ActionEvent actionEvent) {
     }
 
-
+    private void showErrorMessage(Exception err) {
+        Alert errorDialog = DialogHelper.getErrorDialog(this.style, err);
+        errorDialog.initOwner(TPPolygonFiles.getScene().getWindow());
+        errorDialog.showAndWait();
+    }
 }

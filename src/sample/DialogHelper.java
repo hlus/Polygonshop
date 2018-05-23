@@ -29,10 +29,6 @@ public class DialogHelper {
         // Create the custom dialog.
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("Create new file");
-        //dialog.setHeaderText("Set the options");
-
-        // Set the icon (must be included in the project).
-        // dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
 
         // Set the button types.
         ButtonType createButtonType = new ButtonType("Create", ButtonBar.ButtonData.OK_DONE);
