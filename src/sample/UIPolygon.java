@@ -25,7 +25,7 @@ public class UIPolygon implements Serializable {
     private double height;                                          // height of canvas (work area height)
     private String fileName;                                        // file name var (for save or change)
     private Polygon polygon;                                        // polygon object describes polygon
-    private boolean isTriangulate;                                  // state of polygon is triangulate or not
+    private TriangulatedPolygon tPol;
 
     /**
      * Simple getter for tab property
@@ -117,7 +117,7 @@ public class UIPolygon implements Serializable {
      * @return boolean which describe 'polygon already is triangulate?'
      */
     public boolean isTriangulate() {
-        return isTriangulate;
+        return tPol != null;
     }
 
     /**
@@ -148,7 +148,8 @@ public class UIPolygon implements Serializable {
 
         canvas.setOnMouseClicked(e -> {
             if (isBuilding()) {
-                Point2D clickPoint = new Point2D(e.getX(), e.getY());
+                int verIndex = buildPoints.size();
+                Point2D clickPoint = new Point2D(e.getX(), e.getY(), "V" + verIndex);
                 DrawAssistant.drawDefaultPoint(canvas, clickPoint);
                 buildPoints.add(clickPoint);
             }
@@ -187,6 +188,7 @@ public class UIPolygon implements Serializable {
      * @throws Exception
      */
     public void onBuildOrEndBuilt() throws Exception {
+        // TODO : This should be addressed in the controller
         if (isBuilding()) {
             if (buildPoints.size() < 3) {
                 buildPoints = null;
@@ -199,6 +201,10 @@ public class UIPolygon implements Serializable {
         } else {
             buildPoints = new ArrayList<>();
         }
+    }
+
+    public void triangulatePolygon() {
+        tPol = new TriangulatedPolygon(this.polygon);
     }
 
     /**
@@ -226,7 +232,7 @@ public class UIPolygon implements Serializable {
      */
     public void onClearPolygon() {
         polygon = null;
-        isTriangulate = false;
+        tPol = null;
         redrawPolygon();
     }
 }

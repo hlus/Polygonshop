@@ -89,7 +89,7 @@ public class Controller {
 
     /**
      * Handle action related to input (in this case specifically only responds to
-     * keyboard event CTRL-A).
+     * keyboard event CTRL-KEY).
      *
      * @param event Input event.
      */
@@ -155,6 +155,10 @@ public class Controller {
                 BBuildPolygon.setDisable(false);
                 BBuildPolygon.setText(polygonUI.isBuilding() ? "Finish building" : "Build polygon");
             } else {
+                if (!polygonUI.isTriangulate())
+                    BTriangulate.setDisable(false);
+                else
+                    BTriangulateInfo.setDisable(false);
                 BClearPolygon.setDisable(false);
             }
         }
@@ -294,8 +298,9 @@ public class Controller {
      */
     @FXML
     private void onTriangulatePolygon() {
-        // TODO : implement click on Triangulate
-        throw new NotImplementedException();
+        // TODO: implement apart method getSelectedPolygon()
+        UIPolygon polygonUI = tabs.get(selectedTab);
+        polygonUI.triangulatePolygon();
     }
 
     /**

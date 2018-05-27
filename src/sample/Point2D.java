@@ -19,6 +19,7 @@ public class Point2D implements Serializable {
      */
     private double x;
     private double y;
+    private String desc;
 
     /**
      * Simple getter for property x
@@ -40,6 +41,20 @@ public class Point2D implements Serializable {
         return y;
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public Point2D(double x, double y, String desc) {
+        this.x = x;
+        this.y = y;
+        this.desc = desc;
+    }
+
     /**
      * Constructor with copy of point
      *
@@ -48,7 +63,21 @@ public class Point2D implements Serializable {
      * @see Point2D
      */
     public Point2D(double x, double y) {
-        this.x = x;
-        this.y = y;
+        this(x,y,"");
+    }
+
+    public static double distance(Point2D a, Point2D b) {
+        double dx = b.getX() - a.getX();
+        double dy = b.getY() - a.getY();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public double distance(Point2D p) {
+        return distance(this, p);
+    }
+
+    @Override
+    public String toString() {
+        return desc;
     }
 }
