@@ -3,7 +3,6 @@ package sample;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -251,7 +250,8 @@ public class UIPolygon implements Serializable {
         if (cell.getSubNodes() != null)
             for (CostCell subCell : cell.getSubNodes()) {
                 drawCostCell(subCell);
-                DrawAssistant.drawTreeLine(canvas, cell.getSeg().getMidpoint(), subCell.getSeg().getMidpoint());
+                if (DrawAssistant.options.showTree)
+                    DrawAssistant.drawTreeLine(canvas, cell.getSeg().getMidpoint(), subCell.getSeg().getMidpoint());
             }
     }
 

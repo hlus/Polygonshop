@@ -122,6 +122,7 @@ public class DialogHelper {
 
     public static Dialog<OptionValues> getOptionsDialog(String style, OptionValues values) {
         Dialog<OptionValues> dialog = new Dialog<>();
+        dialog.setTitle("Options");
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
@@ -131,6 +132,8 @@ public class DialogHelper {
 
         JFXCheckBox showDescription = new JFXCheckBox();
         showDescription.setSelected(values.showDescription);
+        JFXCheckBox showTree = new JFXCheckBox();
+        showTree.setSelected(values.showTree);
         JFXTextField pointRadius = new JFXTextField(String.format("%.1f", values.pointRadius));
         JFXTextField lineWidth = new JFXTextField(String.format("%.1f", values.lineWidth));
         JFXTextField treeLineWidth = new JFXTextField(String.format("%.1f", values.treeLineWidth));
@@ -142,35 +145,38 @@ public class DialogHelper {
         JFXColorPicker diagonalColor = new JFXColorPicker(values.diagonalColor);
 
 
-        grid.add(new Label("show description"), 0, 0);
+        grid.add(new Label("Show description"), 0, 0);
         grid.add(showDescription, 1, 0);
 
-        grid.add(new Label("Point radius:"), 0, 1);
-        grid.add(pointRadius, 1, 1);
+        grid.add(new Label("Show tree"), 0, 1);
+        grid.add(showTree, 1, 1);
 
-        grid.add(new Label("Line width:"), 0, 2);
-        grid.add(lineWidth, 1, 2);
+        grid.add(new Label("Point radius:"), 0, 2);
+        grid.add(pointRadius, 1, 2);
 
-        grid.add(new Label("Tree line width:"), 0, 3);
-        grid.add(treeLineWidth, 1, 3);
+        grid.add(new Label("Line width:"), 0, 3);
+        grid.add(lineWidth, 1, 3);
 
-        grid.add(new Label("Polygon background: "), 0, 4);
-        grid.add(background, 1, 4);
+        grid.add(new Label("Tree line width:"), 0, 4);
+        grid.add(treeLineWidth, 1, 4);
 
-        grid.add(new Label("Vertex color: "), 0, 5);
-        grid.add(vertexColor, 1, 5);
+        grid.add(new Label("Polygon background: "), 0, 5);
+        grid.add(background, 1, 5);
 
-        grid.add(new Label("Leaf color: "), 0, 6);
-        grid.add(leafColor, 1, 6);
+        grid.add(new Label("Vertex color: "), 0, 6);
+        grid.add(vertexColor, 1, 6);
 
-        grid.add(new Label("Node color: "), 0, 7);
-        grid.add(nodeColor, 1, 7);
+        grid.add(new Label("Leaf color: "), 0, 7);
+        grid.add(leafColor, 1, 7);
 
-        grid.add(new Label("Line color: "), 0, 8);
-        grid.add(simpleLineColor, 1, 8);
+        grid.add(new Label("Node color: "), 0, 8);
+        grid.add(nodeColor, 1, 8);
 
-        grid.add(new Label("Diagonal color: "), 0, 9);
-        grid.add(diagonalColor, 1, 9);
+        grid.add(new Label("Line color: "), 0, 9);
+        grid.add(simpleLineColor, 1, 9);
+
+        grid.add(new Label("Diagonal color: "), 0, 10);
+        grid.add(diagonalColor, 1, 10);
 
         dialog.getDialogPane().setContent(grid);
         Platform.runLater(showDescription::requestFocus);
@@ -182,6 +188,7 @@ public class DialogHelper {
                 null :
                 new OptionValues(
                         showDescription.isSelected(),
+                        showTree.isSelected(),
                         Double.parseDouble(pointRadius.getText()),
                         Double.parseDouble(lineWidth.getText()),
                         Double.parseDouble(treeLineWidth.getText()),
