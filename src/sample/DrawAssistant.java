@@ -9,15 +9,15 @@ import javafx.scene.paint.Color;
  * use canvas, Point2D, Color
  *
  * @author hlus
- * @version 2.0
+ * @version 2.1
  */
 public class DrawAssistant {
 
     /**
-     * This method draw default point on canvas
+     * Draw default point on canvas
      *
      * @param canvas simple canvas for draw
-     * @param point  Point2D for use coordinates
+     * @param point  Point2D describe where is draw point
      */
     public static void drawDefaultPoint(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -28,6 +28,12 @@ public class DrawAssistant {
         drawText(canvas, point.getDesc(), point, 12.0, 12.0);
     }
 
+    /**
+     * Draw node of triangulation tree
+     *
+     * @param canvas simple canvas for draw
+     * @param point  Point2D describe where is draw node
+     */
     public static void drawNodeOfTree(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
@@ -35,6 +41,12 @@ public class DrawAssistant {
         gc.fillOval(point.getX() - d / 2, point.getY() - d / 2, d, d);
     }
 
+    /**
+     * Draw leaf of triangulation tree
+     *
+     * @param canvas simple canvas for draw
+     * @param point  Point2D describe where is draw leaf
+     */
     public static void drawLeafOfTree(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
@@ -43,7 +55,7 @@ public class DrawAssistant {
     }
 
     /**
-     * This method draw default line on canvas
+     * Draw default line on canvas
      *
      * @param canvas simple canvas for draw
      * @param a      Point2D 'from'
@@ -56,6 +68,13 @@ public class DrawAssistant {
         gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
     }
 
+    /**
+     * Draw a dashed line
+     *
+     * @param canvas simple canvas for draw
+     * @param p1     Point2D 'from'
+     * @param p2     Point2D 'to'
+     */
     public static void drawDashedLine(Canvas canvas, Point2D p1, Point2D p2) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
@@ -65,9 +84,15 @@ public class DrawAssistant {
         gc.setLineDashes(null);
     }
 
-
+    /**
+     * Draw diagonal of polygon
+     * after triangulation
+     *
+     * @param canvas   simple canvas for draw
+     * @param diagonal Segment object which describe diagonal
+     * @param leaf     boolean value 'node is leaf or not?'
+     */
     public static void drawDefaultDiagonal(Canvas canvas, Segment diagonal, boolean leaf) {
-        // draw diagonal
         drawDashedLine(canvas, diagonal.getA(), diagonal.getB());
         Point2D mid = diagonal.getMidpoint();
         if (leaf)
@@ -78,6 +103,13 @@ public class DrawAssistant {
         drawText(canvas, diagonal.getDesc(), diagonal.getMidpoint(), xshift, 15);
     }
 
+    /**
+     * Draw line for triangulation tree
+     *
+     * @param canvas simple canvas for draw
+     * @param a      Point2D 'from'
+     * @param b      Point2D 'to'
+     */
     public static void drawTreeLine(Canvas canvas, Point2D a, Point2D b) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setLineWidth(1.0);
@@ -86,11 +118,13 @@ public class DrawAssistant {
     }
 
     /**
-     * This method draw default text on canvas
+     * Draw default text on canvas
      *
      * @param canvas simple canvas for draw
      * @param text   String which draw
      * @param point  Point2D where
+     * @param xShift shift axis x
+     * @param yShift shift axis y
      */
     public static void drawText(Canvas canvas, String text, Point2D point, double xShift, double yShift) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
