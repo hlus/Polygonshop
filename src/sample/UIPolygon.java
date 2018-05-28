@@ -13,19 +13,19 @@ import java.util.List;
  * Class which describe UI part of polygon
  *
  * @author hlus
- * @version 2.0
+ * @version 2.5
  */
 public class UIPolygon implements Serializable {
 
     private transient static Color canvasBackground = Color.GRAY;   // color of background canvas
-    private transient Tab tab;                                      // The tab that contains the canvas to display polygon
+    private transient Tab tab;                                      // tab which contains the canvas to display polygon
     private transient Canvas canvas;                                // canvas to display the polygon
     private transient List<Point2D> buildPoints;                    // intermediate points for constructing a polygon
     private double width;                                           // width of canvas (work area width)
     private double height;                                          // height of canvas (work area height)
     private String fileName;                                        // file name var (for save or change)
     private Polygon polygon;                                        // polygon object describes polygon
-    private TriangulatedPolygon tPol;
+    private TriangulatedPolygon tPol;                               // triangulation object describe triangulation info
 
     /**
      * Simple getter for tab property
@@ -181,10 +181,20 @@ public class UIPolygon implements Serializable {
         }
     }
 
+    /**
+     * This method call for start build polygon
+     */
     public void beginBuildPol() {
         buildPoints = new ArrayList<>();
     }
 
+    /**
+     * This method end building polygon
+     * and redraw canvas ...
+     *
+     * @throws Exception throw when building points less
+     *                   then 3
+     */
     public void endBuildPol() throws Exception {
         if (buildPoints.size() < 3) {
             buildPoints = null;
@@ -196,6 +206,10 @@ public class UIPolygon implements Serializable {
         redrawPolygon();
     }
 
+    /**
+     * This method create object TriangulatePolygon
+     * which describe is triangulated polygon info
+     */
     public void triangulatePolygon() {
         tPol = new TriangulatedPolygon(this.polygon);
         redrawPolygon();
@@ -221,6 +235,13 @@ public class UIPolygon implements Serializable {
         }
     }
 
+    /**
+     * This is recursive method for draw
+     * all nodes of triangulation tree
+     *
+     * @param cell is simple node of cost matrix
+     * @see TriangulatedPolygon
+     */
     private void drawCostCell(CostCell cell) {
         if (cell == null || cell.getSeg() == null) return;
         DrawAssistant.drawDefaultDiagonal(canvas, cell.getSeg(), cell.getSubNodes() == null);
