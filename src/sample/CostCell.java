@@ -1,9 +1,10 @@
 package sample;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CostCell {
+public class CostCell implements Serializable {
 
     private Segment seg;
     private double cost;

@@ -128,6 +128,7 @@ public class UIPolygon implements Serializable {
     public UIPolygon(UIPolygon p) {
         this(p.getFileName(), p.getWidth(), p.getHeight());
         this.polygon = p.getPolygon();
+        this.tPol = p.tPol;
         redrawPolygon();
     }
 
@@ -175,6 +176,7 @@ public class UIPolygon implements Serializable {
             outObj.writeObject(this);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("Cannot get access for path to save!");
         }
     }
