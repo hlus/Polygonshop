@@ -13,6 +13,19 @@ import javafx.scene.paint.Color;
  */
 public class DrawAssistant {
 
+    public static OptionValues options = new OptionValues(
+            true,
+            4.0,
+            2.0,
+            1.0,
+            Color.GRAY,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK
+    );
+
     /**
      * Draw default point on canvas
      *
@@ -21,10 +34,13 @@ public class DrawAssistant {
      */
     public static void drawDefaultPoint(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.BLACK);
-        gc.setStroke(Color.BLACK);
-        double d = 8;
-        gc.fillOval(point.getX() - d / 2, point.getY() - d / 2, d, d);
+        gc.setFill(options.vertexColor);
+        //gc.setStroke(Color.BLACK);
+        gc.fillOval(point.getX() - options.pointRadius,
+                point.getY() - options.pointRadius,
+                options.pointRadius * 2,
+                options.pointRadius * 2
+        );
         drawText(canvas, point.getDesc(), point, 12.0, 12.0);
     }
 
@@ -36,7 +52,7 @@ public class DrawAssistant {
      */
     public static void drawNodeOfTree(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.BLACK);
+        gc.setFill(options.nodeColor);
         double d = 7;
         gc.fillOval(point.getX() - d / 2, point.getY() - d / 2, d, d);
     }
@@ -49,7 +65,7 @@ public class DrawAssistant {
      */
     public static void drawLeafOfTree(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.BLACK);
+        gc.setFill(options.leafColor);
         double h = 7;
         gc.fillRect(point.getX() - h / 2, point.getY() - h / 2, h, h);
     }
@@ -63,8 +79,8 @@ public class DrawAssistant {
      */
     public static void drawDefaultLine(Canvas canvas, Point2D a, Point2D b) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setLineWidth(2.0);
-        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(options.lineWidth);
+        gc.setStroke(options.simpleLineColor);
         gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
     }
 
@@ -77,8 +93,8 @@ public class DrawAssistant {
      */
     public static void drawDashedLine(Canvas canvas, Point2D p1, Point2D p2) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(1); // default 1.0
+        gc.setStroke(options.diagonalColor);
+        gc.setLineWidth(options.treeLineWidth);
         gc.setLineDashes(3);
         gc.strokeLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         gc.setLineDashes(null);
@@ -93,14 +109,15 @@ public class DrawAssistant {
      * @param leaf     boolean value 'node is leaf or not?'
      */
     public static void drawDefaultDiagonal(Canvas canvas, Segment diagonal, boolean leaf) {
-        drawDashedLine(canvas, diagonal.getA(), diagonal.getB());
         Point2D mid = diagonal.getMidpoint();
-        if (leaf)
-            drawLeafOfTree(canvas, mid);
-        else
+        if (!leaf) {
             drawNodeOfTree(canvas, mid);
-        double xshift = (diagonal.getDesc().length() * 5.0) / 2.0;
-        drawText(canvas, diagonal.getDesc(), diagonal.getMidpoint(), xshift, 15);
+            drawDashedLine(canvas, diagonal.getA(), diagonal.getB());
+        } else
+            drawLeafOfTree(canvas, mid);
+        double xShift = (diagonal.getDesc().length() * 5.0) / 2.0;
+        if (options.showDescription)
+            drawText(canvas, diagonal.getDesc(), diagonal.getMidpoint(), xShift, 15);
     }
 
     /**
@@ -137,11 +154,10 @@ public class DrawAssistant {
      * Color canvas all with one color
      *
      * @param canvas simple canvas for draw
-     * @param color  Color for fill canvas
      */
-    public static void fillCanvas(Canvas canvas, Color color) {
+    public static void fillCanvas(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(color);
+        gc.setFill(options.polygonBackground);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 }

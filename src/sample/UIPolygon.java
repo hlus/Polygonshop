@@ -17,7 +17,6 @@ import java.util.List;
  */
 public class UIPolygon implements Serializable {
 
-    private transient static Color canvasBackground = Color.GRAY;   // color of background canvas
     private transient Tab tab;                                      // tab which contains the canvas to display polygon
     private transient Canvas canvas;                                // canvas to display the polygon
     private transient List<Point2D> buildPoints;                    // intermediate points for constructing a polygon
@@ -80,6 +79,10 @@ public class UIPolygon implements Serializable {
      */
     public Polygon getPolygon() {
         return polygon;
+    }
+
+    public TriangulatedPolygon getTriangulatedPol() {
+        return tPol;
     }
 
     /**
@@ -219,8 +222,8 @@ public class UIPolygon implements Serializable {
      * Method which redraw polygon at canvas
      * depending on the polygon property
      */
-    private void redrawPolygon() {
-        DrawAssistant.fillCanvas(canvas, canvasBackground);
+    public void redrawPolygon() {
+        DrawAssistant.fillCanvas(canvas);
         if (polygon != null && polygon.getPoints().size() != 0) {
             List<Point2D> points = polygon.getPoints();
             for (int i = 0; i < points.size() - 1; i++) {

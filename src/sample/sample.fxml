@@ -20,6 +20,7 @@
                     <MenuItem onAction="#onCreateNewFile" text="New" />
                     <MenuItem onAction="#onOpenFile" text="Open" />
                     <MenuItem fx:id="MISave" onAction="#onSave" text="Save" />
+                    <MenuItem onAction="#onOptions" text="Options" />
                     <SeparatorMenuItem />
                     <MenuItem onAction="#onExit" text="Exit" />
                 </items>

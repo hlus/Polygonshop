@@ -2,6 +2,7 @@ package sample;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -17,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -156,10 +158,10 @@ public class Controller {
                 BBuildPolygon.setDisable(false);
                 BBuildPolygon.setText(polygonUI.isBuilding() ? "Finish building" : "Build polygon");
             } else {
-                if (!polygonUI.isTriangulate())
-                    BTriangulate.setDisable(false);
-                else
+                if (polygonUI.isTriangulate())
                     BTriangulateInfo.setDisable(false);
+                else
+                    BTriangulate.setDisable(false);
                 BClearPolygon.setDisable(false);
             }
         }
@@ -241,6 +243,22 @@ public class Controller {
     }
 
     /**
+     * This method is handle when user click on Options
+     *
+     * @param actionEvent
+     */
+    public void onOptions(ActionEvent actionEvent) {
+        Dialog<OptionValues> optionsDialog = DialogHelper.getOptionsDialog(this.style, DrawAssistant.options);
+        optionsDialog.initOwner(TPPolygonFiles.getScene().getWindow());
+
+        Optional<OptionValues> result = optionsDialog.showAndWait();
+        result.ifPresent(res -> {
+            DrawAssistant.options = res;
+            tabs.values().forEach(UIPolygon::redrawPolygon);
+        });
+    }
+
+    /**
      * This method is handle when user click on Exit
      */
     @FXML
@@ -303,6 +321,7 @@ public class Controller {
     private void onTriangulatePolygon() {
         UIPolygon polygonUI = getSelectedPolygon();
         polygonUI.triangulatePolygon();
+        renderRightSideMenu();
     }
 
     /**
@@ -310,8 +329,9 @@ public class Controller {
      */
     @FXML
     public void onTriangulateInfo() {
-        // TODO : implement click on triangulate info
-        throw new NotImplementedException();
+        Alert alert = DialogHelper.getTriangulationInfoDialog(this.style, getSelectedPolygon().getTriangulatedPol());
+        alert.initOwner(TPPolygonFiles.getScene().getWindow());
+        alert.showAndWait();
     }
 
     // -----------------------------------------------------------------------------
