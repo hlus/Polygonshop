@@ -23,7 +23,7 @@ import java.util.Optional;
  * Controller for sample.fxml view
  *
  * @author hlus
- * @version 2.0
+ * @version 2.1
  */
 public class Controller {
 
@@ -64,6 +64,7 @@ public class Controller {
      * @see Tab#hashCode()
      */
     private HashMap<Integer, UIPolygon> tabs;
+
     /**
      * Property which contain hashcode of selected tab
      */
@@ -317,7 +318,12 @@ public class Controller {
 
     // --------------------------- CONTROLLER LOGIC --------------------------------
 
-    private UIPolygon getSelectedPolygon(){
+    /**
+     * Get access for selected UIPolygon object
+     *
+     * @return UIPolygon object
+     */
+    private UIPolygon getSelectedPolygon() {
         return tabs.get(selectedTab);
     }
 
