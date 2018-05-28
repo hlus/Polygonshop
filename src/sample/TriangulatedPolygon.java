@@ -26,7 +26,7 @@ public class TriangulatedPolygon implements Serializable {
     }
 
     public double getCostSum() {
-        return this.rootNode.getCost();
+        return this.rootNode.getCost() - this.rootNode.getSeg().getCost();
     }
 
     public TriangulatedPolygon(Polygon polygon) {

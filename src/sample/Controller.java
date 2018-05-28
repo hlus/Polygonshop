@@ -150,7 +150,7 @@ public class Controller {
         BTriangulate.setDisable(true);
         BTriangulateInfo.setDisable(true);
         if (selectedTab != null) {
-            UIPolygon polygonUI = tabs.get(selectedTab);
+            UIPolygon polygonUI = getSelectedPolygon();
             if (!polygonUI.isBuilt()) {
                 BBuildPolygon.setDisable(false);
                 BBuildPolygon.setText(polygonUI.isBuilding() ? "Finish building" : "Build polygon");
@@ -225,11 +225,11 @@ public class Controller {
     @FXML
     private void onSave() {
         if (selectedTab != null) {
-            UIPolygon polygonUI = tabs.get(selectedTab);
+            UIPolygon polygonUI = getSelectedPolygon();
             File file = createAndShowFileChooser("Save Polygon", polygonUI.getFileName());
             if (file != null) {
                 try {
-                    polygonUI.onSave(file);
+                    polygonUI.savePolygon(file);
                 } catch (Exception e) {
                     showErrorMessage(e.getMessage());
                 }
@@ -268,13 +268,15 @@ public class Controller {
      * selected object
      *
      * @see UIPolygon
-     * @see UIPolygon#onBuildOrEndBuilt()
      */
     @FXML
     private void onBuildPolygon() {
-        UIPolygon polygonUI = tabs.get(selectedTab);
+        UIPolygon polygonUI = getSelectedPolygon();
         try {
-            polygonUI.onBuildOrEndBuilt();
+            if (polygonUI.isBuilding())
+                polygonUI.endBuildPol();
+            else
+                polygonUI.beginBuildPol();
         } catch (Exception e) {
             showErrorMessage(e.getMessage());
         }
@@ -288,7 +290,7 @@ public class Controller {
      */
     @FXML
     private void onClearPolygon() {
-        UIPolygon polygonUI = tabs.get(selectedTab);
+        UIPolygon polygonUI = getSelectedPolygon();
         polygonUI.onClearPolygon();
         renderRightSideMenu();
     }
@@ -298,8 +300,7 @@ public class Controller {
      */
     @FXML
     private void onTriangulatePolygon() {
-        // TODO: implement apart method getSelectedPolygon()
-        UIPolygon polygonUI = tabs.get(selectedTab);
+        UIPolygon polygonUI = getSelectedPolygon();
         polygonUI.triangulatePolygon();
     }
 
@@ -315,6 +316,10 @@ public class Controller {
     // -----------------------------------------------------------------------------
 
     // --------------------------- CONTROLLER LOGIC --------------------------------
+
+    private UIPolygon getSelectedPolygon(){
+        return tabs.get(selectedTab);
+    }
 
     /**
      * Method add new tab to the tabs property

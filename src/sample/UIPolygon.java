@@ -112,8 +112,6 @@ public class UIPolygon implements Serializable {
     }
 
     /**
-     * TODO : In the future, it may not exist (boolean variable)
-     *
      * @return boolean which describe 'polygon already is triangulate?'
      */
     public boolean isTriangulate() {
@@ -169,7 +167,7 @@ public class UIPolygon implements Serializable {
      * @param file this argument need for get a name of save file and path to save
      * @throws Exception path can be wrong !!!
      */
-    public void onSave(File file) throws Exception {
+    public void savePolygon(File file) throws Exception {
         try (ObjectOutputStream outObj = new ObjectOutputStream(new FileOutputStream(file.getPath()))) {
             setFileName(file.getName());
             tab.setText(fileName);
@@ -181,30 +179,24 @@ public class UIPolygon implements Serializable {
         }
     }
 
-    /**
-     * This method call when we wanna begin building
-     * of our polygon, or when end building polygon.
-     *
-     * @throws Exception
-     */
-    public void onBuildOrEndBuilt() throws Exception {
-        // TODO : This should be addressed in the controller
-        if (isBuilding()) {
-            if (buildPoints.size() < 3) {
-                buildPoints = null;
-                redrawPolygon();
-                throw new Exception("You added not enough points to build a polygon!");
-            }
-            polygon = new Polygon(buildPoints);
+    public void beginBuildPol() {
+        buildPoints = new ArrayList<>();
+    }
+
+    public void endBuildPol() throws Exception {
+        if (buildPoints.size() < 3) {
             buildPoints = null;
             redrawPolygon();
-        } else {
-            buildPoints = new ArrayList<>();
+            throw new Exception("You added not enough points to build a polygon!");
         }
+        polygon = new Polygon(buildPoints);
+        buildPoints = null;
+        redrawPolygon();
     }
 
     public void triangulatePolygon() {
         tPol = new TriangulatedPolygon(this.polygon);
+        redrawPolygon();
     }
 
     /**
@@ -216,14 +208,25 @@ public class UIPolygon implements Serializable {
         if (polygon != null && polygon.getPoints().size() != 0) {
             List<Point2D> points = polygon.getPoints();
             for (int i = 0; i < points.size() - 1; i++) {
-                DrawAssistant.drawText(canvas, "V" + i, points.get(i), 10);
                 DrawAssistant.drawDefaultPoint(canvas, points.get(i));
                 DrawAssistant.drawDefaultLine(canvas, points.get(i), points.get(i + 1));
             }
-            DrawAssistant.drawText(canvas, "V" + (points.size() - 1), points.get(points.size() - 1), 10);
             DrawAssistant.drawDefaultPoint(canvas, points.get(points.size() - 1));
             DrawAssistant.drawDefaultLine(canvas, points.get(0), points.get(points.size() - 1));
+            if (tPol != null) {
+                drawCostCell(tPol.getRootNode());
+            }
         }
+    }
+
+    private void drawCostCell(CostCell cell) {
+        if (cell == null || cell.getSeg() == null) return;
+        DrawAssistant.drawDefaultDiagonal(canvas, cell.getSeg(), cell.getSubNodes() == null);
+        if (cell.getSubNodes() != null)
+            for (CostCell subCell : cell.getSubNodes()) {
+                drawCostCell(subCell);
+                DrawAssistant.drawTreeLine(canvas, cell.getSeg().getMidpoint(), subCell.getSeg().getMidpoint());
+            }
     }
 
     /**

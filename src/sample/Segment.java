@@ -37,6 +37,10 @@ public class Segment implements Serializable {
         return a.distance(b);
     }
 
+    public Point2D getMidpoint() {
+        return new Point2D((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2, desc);
+    }
+
     @Override
     public String toString() {
         return desc;
