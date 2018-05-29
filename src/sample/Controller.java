@@ -18,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -90,38 +89,6 @@ public class Controller {
         });
     }
 
-    /**
-     * Handle action related to input (in this case specifically only responds to
-     * keyboard event CTRL-KEY).
-     *
-     * @param event Input event.
-     */
-    @FXML
-    private void handleKeyInput(final InputEvent event) {
-        if (event instanceof KeyEvent) {
-            final KeyEvent keyEvent = (KeyEvent) event;
-            if (keyEvent.isControlDown()) {
-                switch (keyEvent.getCode()) {
-                    case N:
-                        onCreateNewFile();
-                        break;
-                    case O:
-                        onOpenFile();
-                        break;
-                    case S:
-                        onSave();
-                    case A:
-                        onShowAbout();
-                        break;
-                    case E:
-                        onExit();
-                    default:
-                        break;
-                }
-            }
-        }
-    }
-
     // -------------------------------- RENDER UI ----------------------------------
 
     /**
@@ -170,6 +137,38 @@ public class Controller {
     // -----------------------------------------------------------------------------
 
     // ----------------------------- TOP MENU HANDLERS -----------------------------
+
+    /**
+     * Handle action related to input (in this case specifically only responds to
+     * keyboard event CTRL-KEY).
+     *
+     * @param event Input event.
+     */
+    @FXML
+    private void handleKeyInput(final InputEvent event) {
+        if (event instanceof KeyEvent) {
+            final KeyEvent keyEvent = (KeyEvent) event;
+            if (keyEvent.isControlDown()) {
+                switch (keyEvent.getCode()) {
+                    case N:
+                        onCreateNewFile();
+                        break;
+                    case O:
+                        onOpenFile();
+                        break;
+                    case S:
+                        onSave();
+                    case A:
+                        onShowAbout();
+                        break;
+                    case E:
+                        onExit();
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 
     /**
      * Binding method handle on click create new file

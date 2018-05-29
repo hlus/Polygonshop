@@ -3,8 +3,7 @@ package sample;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.behavior.JFXColorPickerBehavior;
-import com.jfoenix.skins.JFXColorPickerSkin;
+
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
