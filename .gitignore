@@ -1,7 +1,9 @@
+# option file
+config
+
 # IntelliJ
 out/
 .idea/
-
 
 # Compiled class file
 *.class

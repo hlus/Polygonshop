@@ -13,10 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -80,6 +77,7 @@ public class Controller {
         selectedTab = null;
         tabs = new HashMap();
         style = this.getClass().getResource("main.css").toExternalForm();
+        loadOptions();
         renderAllUI();
 
         // set event on change tabs ...
@@ -263,6 +261,7 @@ public class Controller {
     @FXML
     private void onExit() {
         // TODO : Add handle if tabs.size() != 0 ask fow save polygons
+        saveOptions();
         ((Stage) TPPolygonFiles.getScene().getWindow()).close();
     }
 
@@ -401,6 +400,23 @@ public class Controller {
         return type.contains("Save") ?
                 chooser.showSaveDialog(ownerWindow) :
                 chooser.showOpenDialog(ownerWindow);
+    }
+
+    private void loadOptions() {
+        try (ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(new File("config")))) {
+            OptionValues options = new OptionValues((OptionValues) objIn.readObject());
+            DrawAssistant.options = options;
+        } catch (Exception e) {
+            DrawAssistant.options = new OptionValues();
+        }
+    }
+
+    private void saveOptions() {
+        try (ObjectOutputStream outObj = new ObjectOutputStream(new FileOutputStream(new File("config")))) {
+            outObj.writeObject(DrawAssistant.options);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -13,19 +13,7 @@ import javafx.scene.paint.Color;
  */
 public class DrawAssistant {
 
-    public static OptionValues options = new OptionValues(
-            true,
-            true,
-            4.0,
-            2.0,
-            1.0,
-            Color.GRAY,
-            Color.BLACK,
-            Color.BLACK,
-            Color.BLACK,
-            Color.BLACK,
-            Color.BLACK
-    );
+    public static OptionValues options;
 
     /**
      * Draw default point on canvas
@@ -35,7 +23,7 @@ public class DrawAssistant {
      */
     public static void drawDefaultPoint(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(options.vertexColor);
+        gc.setFill(options.getVertexColor());
         //gc.setStroke(Color.BLACK);
         gc.fillOval(point.getX() - options.pointRadius,
                 point.getY() - options.pointRadius,
@@ -53,7 +41,7 @@ public class DrawAssistant {
      */
     public static void drawNodeOfTree(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(options.nodeColor);
+        gc.setFill(options.getNodeColor());
         double d = 7;
         gc.fillOval(point.getX() - d / 2, point.getY() - d / 2, d, d);
     }
@@ -66,7 +54,7 @@ public class DrawAssistant {
      */
     public static void drawLeafOfTree(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(options.leafColor);
+        gc.setFill(options.getLeafColor());
         double h = 7;
         gc.fillRect(point.getX() - h / 2, point.getY() - h / 2, h, h);
     }
@@ -81,7 +69,7 @@ public class DrawAssistant {
     public static void drawDefaultLine(Canvas canvas, Point2D a, Point2D b) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setLineWidth(options.lineWidth);
-        gc.setStroke(options.simpleLineColor);
+        gc.setStroke(options.getSimpleLineColor());
         gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
     }
 
@@ -94,7 +82,7 @@ public class DrawAssistant {
      */
     public static void drawDashedLine(Canvas canvas, Point2D p1, Point2D p2) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(options.diagonalColor);
+        gc.setStroke(options.getDiagonalColor());
         gc.setLineWidth(options.treeLineWidth);
         gc.setLineDashes(3);
         gc.strokeLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
@@ -158,7 +146,7 @@ public class DrawAssistant {
      */
     public static void fillCanvas(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(options.polygonBackground);
+        gc.setFill(options.getPolygonBackground());
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 }

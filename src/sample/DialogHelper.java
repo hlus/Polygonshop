@@ -9,6 +9,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+import java.util.Arrays;
+
 /**
  * This class just generate dialogs
  * and have only static methods
@@ -129,7 +131,7 @@ public class DialogHelper {
     /**
      * Create options dialog
      *
-     * @param style String variable which describe style (.css)
+     * @param style  String variable which describe style (.css)
      * @param values current option values
      * @return options dialog which was generated
      */
@@ -150,12 +152,12 @@ public class DialogHelper {
         JFXTextField pointRadius = new JFXTextField(String.format("%.1f", values.pointRadius));
         JFXTextField lineWidth = new JFXTextField(String.format("%.1f", values.lineWidth));
         JFXTextField treeLineWidth = new JFXTextField(String.format("%.1f", values.treeLineWidth));
-        JFXColorPicker background = new JFXColorPicker(values.polygonBackground);
-        JFXColorPicker vertexColor = new JFXColorPicker(values.vertexColor);
-        JFXColorPicker leafColor = new JFXColorPicker(values.leafColor);
-        JFXColorPicker nodeColor = new JFXColorPicker(values.nodeColor);
-        JFXColorPicker simpleLineColor = new JFXColorPicker(values.simpleLineColor);
-        JFXColorPicker diagonalColor = new JFXColorPicker(values.diagonalColor);
+        JFXColorPicker background = new JFXColorPicker(values.getPolygonBackground());
+        JFXColorPicker vertexColor = new JFXColorPicker(values.getVertexColor());
+        JFXColorPicker leafColor = new JFXColorPicker(values.getLeafColor());
+        JFXColorPicker nodeColor = new JFXColorPicker(values.getNodeColor());
+        JFXColorPicker simpleLineColor = new JFXColorPicker(values.getSimpleLineColor());
+        JFXColorPicker diagonalColor = new JFXColorPicker(values.getDiagonalColor());
 
 
         grid.add(new Label("Show description"), 0, 0);
@@ -197,22 +199,25 @@ public class DialogHelper {
         dialog.getDialogPane().getStylesheets().add(style);
         dialog.getDialogPane().getStyleClass().add("main");
 
-        dialog.setResultConverter(dialogButton -> dialogButton != ButtonType.OK ?
-                null :
-                new OptionValues(
+        dialog.setResultConverter(dialogButton -> {
+            OptionValues res = null;
+            if (dialogButton != ButtonType.OK) {
+                res = new OptionValues(Arrays.asList(
                         showDescription.isSelected(),
                         showTree.isSelected(),
                         Double.parseDouble(pointRadius.getText()),
                         Double.parseDouble(lineWidth.getText()),
                         Double.parseDouble(treeLineWidth.getText()),
-                        background.getValue(),
-                        vertexColor.getValue(),
-                        leafColor.getValue(),
-                        nodeColor.getValue(),
-                        simpleLineColor.getValue(),
-                        diagonalColor.getValue()
-                )
-        );
+                        ColorUtil.fxToAwt(background.getValue()),
+                        ColorUtil.fxToAwt(vertexColor.getValue()),
+                        ColorUtil.fxToAwt(leafColor.getValue()),
+                        ColorUtil.fxToAwt(nodeColor.getValue()),
+                        ColorUtil.fxToAwt(simpleLineColor.getValue()),
+                        ColorUtil.fxToAwt(diagonalColor.getValue())
+                ));
+            }
+            return res;
+        });
 
         return dialog;
     }
