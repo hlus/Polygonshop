@@ -161,7 +161,7 @@ public class Controller {
                     case A:
                         onShowAbout();
                         break;
-                    case E:
+                    case Q:
                         onExit();
                     default:
                         break;

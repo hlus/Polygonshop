@@ -2,6 +2,11 @@ package sample;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Class which describe option values
+ * @author hlus
+ * @version 1.0
+ */
 public class OptionValues {
 
     public boolean showDescription;
@@ -18,6 +23,7 @@ public class OptionValues {
 
 
     public OptionValues(boolean showDescription, boolean showTree, double pointRadius, double lineWidth, double treeLineWidth, Color polygonBackground, Color vertexColor, Color leafColor, Color nodeColor, Color simpleLineColor, Color diagonalColor) {
+        // TODO remove this constructor !!!
         this.showDescription = showDescription;
         this.showTree = showTree;
         this.pointRadius = pointRadius;

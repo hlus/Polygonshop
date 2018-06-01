@@ -14,7 +14,7 @@ import javafx.scene.layout.GridPane;
  * and have only static methods
  *
  * @author hlus
- * @version 2.0
+ * @version 2.1
  */
 public class DialogHelper {
 
@@ -50,6 +50,13 @@ public class DialogHelper {
         return alert;
     }
 
+    /**
+     * Generate and return triangulation info dialog
+     *
+     * @param style String variable which describe style (.css)
+     * @param tPol  Triangulated polygon, need for get information
+     * @return dialog with extend information about triangulation
+     */
     public static Alert getTriangulationInfoDialog(String style, TriangulatedPolygon tPol) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Triangulation info");
@@ -119,6 +126,13 @@ public class DialogHelper {
         return dialog;
     }
 
+    /**
+     * Create options dialog
+     *
+     * @param style String variable which describe style (.css)
+     * @param values current option values
+     * @return options dialog which was generated
+     */
     public static Dialog<OptionValues> getOptionsDialog(String style, OptionValues values) {
         Dialog<OptionValues> dialog = new Dialog<>();
         dialog.setTitle("Options");
