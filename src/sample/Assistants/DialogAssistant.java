@@ -19,9 +19,28 @@ import java.util.Arrays;
  * and have only static methods
  *
  * @author hlus
- * @version 2.1
+ * @version 2.2
  */
 public class DialogAssistant {
+
+    /**
+     * Method generate template of alert dialog
+     *
+     * @param style   String variable which describe style (.css)
+     * @param type    alert type dialog
+     * @param title   title of the dialog
+     * @param header  header of the dialog
+     * @param content content of the dialog
+     * @return alert template
+     */
+    private static Alert getAlertDialog(String style, Alert.AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.getDialogPane().getStylesheets().add(style);
+        return alert;
+    }
 
     /**
      * This static method which generate Error Alert
@@ -32,11 +51,13 @@ public class DialogAssistant {
      * @see Controller#style
      */
     public static Alert getErrorDialog(String style, String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setContentText(msg);
-        alert.getDialogPane().getStylesheets().add(style);
-        return alert;
+        return getAlertDialog(
+                style,
+                Alert.AlertType.ERROR,
+                "Error",
+                null,
+                msg
+        );
     }
 
     /**
@@ -47,12 +68,13 @@ public class DialogAssistant {
      * @see Controller#style
      */
     public static Alert getConfirmSaveDialog(String style) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Close polygon");
-        alert.setHeaderText("Look carefully, you closed the polygon!");
-        alert.setContentText("Do you want save changes?");
-        alert.getDialogPane().getStylesheets().add(style);
-        return alert;
+        return getAlertDialog(
+                style,
+                Alert.AlertType.CONFIRMATION,
+                "Close polygon",
+                "Look carefully, you closed the polygon!",
+                "Do you want save changes?"
+        );
     }
 
     /**
@@ -63,17 +85,12 @@ public class DialogAssistant {
      * @return dialog with extend information about triangulation
      */
     public static Alert getTriangulationInfoDialog(String style, TriangulatedPolygon tPol) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Triangulation info");
-        //alert.setHeaderText("Look, an Information Dialog");
-        String information = "Vertex count: " + tPol.getN() + "\n" +
+        String content = "Vertex count: " + tPol.getN() + "\n" +
                 "Triangles count: " + tPol.getTrianglesCount() + "\n" +
                 "Diagonals count: " + tPol.getDiaglonalesCount() + "\n" +
                 "Triangulation cost: " + tPol.getCostSum() + "\n" +
                 "Root (solution):" + tPol.getRootNode().getSeg().getDesc();
-        alert.setContentText(information);
-        alert.getDialogPane().getStylesheets().add(style);
-        return alert;
+        return getAlertDialog(style, Alert.AlertType.INFORMATION, "Triangulation info", null, content);
     }
 
     /**
