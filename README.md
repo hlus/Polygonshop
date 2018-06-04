@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ec9468224b704a0fbf5eddce2859ea72)](https://www.codacy.com/app/hlus/Polygonshop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hlus/Polygonshop&amp;utm_campaign=Badge_Grade)
+
 # Polygonshop
 
 This project is course work of Bogdan Kush for Zaporozhye State Engineering Academy.  
