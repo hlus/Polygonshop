@@ -43,10 +43,10 @@
         </menus>
     </MenuBar>
     <HBox VBox.vgrow="ALWAYS">
-        <SplitPane id="main-content" dividerPositions="0.85" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+        <SplitPane id="main-content" dividerPositions="0.80" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
             <items>
                 <JFXTabPane fx:id="TPPolygonFiles" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
-                <VBox id="right-side-menu" maxWidth="220" minWidth="120" spacing="5.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <VBox id="right-side-menu" maxWidth="220" minWidth="160" spacing="5.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                     <padding><Insets bottom="5" left="5" right="5" top="5" /></padding>
                     <JFXButton fx:id="BBuildPolygon"    onAction="#onBuildPolygon" prefWidth="150">Build polygon</JFXButton>
                     <JFXButton fx:id="BClearPolygon"    onAction="#onClearPolygon" prefWidth="150">Clear polygon</JFXButton>

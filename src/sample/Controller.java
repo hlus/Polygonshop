@@ -21,7 +21,7 @@ import java.util.Optional;
  * Controller for sample.fxml view
  *
  * @author hlus
- * @version 2.1
+ * @version 2.2
  */
 public class Controller {
 
@@ -29,21 +29,21 @@ public class Controller {
      * Binding menu items
      */
     @FXML
-    MenuItem MISave;
+    private MenuItem MISave;
     @FXML
-    Menu MIEdit;
+    private Menu MIEdit;
 
     /**
      * Binding TabPane node
      */
     @FXML
-    JFXTabPane TPPolygonFiles;
+    private JFXTabPane TPPolygonFiles;
 
     /**
      * Binding right-side menu buttons
      */
     @FXML
-    JFXButton BBuildPolygon, BClearPolygon, BTriangulate, BTriangulateInfo;
+    private JFXButton BBuildPolygon, BClearPolygon, BTriangulate, BTriangulateInfo;
 
     /**
      * Property which contain style string
@@ -73,7 +73,7 @@ public class Controller {
      * And initialize properties with initial values
      */
     @FXML
-    public void initialize() {
+    private void initialize() {
         selectedTab = null;
         tabs = new HashMap();
         style = this.getClass().getResource("main.css").toExternalForm();
@@ -244,7 +244,8 @@ public class Controller {
      *
      * @param actionEvent
      */
-    public void onOptions(ActionEvent actionEvent) {
+    @FXML
+    private void onOptions(ActionEvent actionEvent) {
         Dialog<OptionValues> optionsDialog = DialogHelper.getOptionsDialog(this.style, DrawAssistant.options);
         optionsDialog.initOwner(TPPolygonFiles.getScene().getWindow());
 
@@ -313,7 +314,7 @@ public class Controller {
     }
 
     /**
-     * Not implemented yet
+     * Call triangulation request to UIPolygon obj.
      */
     @FXML
     private void onTriangulatePolygon() {
@@ -323,10 +324,12 @@ public class Controller {
     }
 
     /**
-     * Not implemented yet
+     * Show dialog which describe
+     * additional information
+     * about triangulation
      */
     @FXML
-    public void onTriangulateInfo() {
+    private void onTriangulateInfo() {
         Alert alert = DialogHelper.getTriangulationInfoDialog(this.style, getSelectedPolygon().getTriangulatedPol());
         alert.initOwner(TPPolygonFiles.getScene().getWindow());
         alert.showAndWait();
@@ -402,6 +405,9 @@ public class Controller {
                 chooser.showOpenDialog(ownerWindow);
     }
 
+    /**
+     * Loads options from a file if the file exists
+     */
     private void loadOptions() {
         try (ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(new File("config")))) {
             OptionValues options = new OptionValues((OptionValues) objIn.readObject());
@@ -411,6 +417,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Saves options in to the file
+     */
     private void saveOptions() {
         try (ObjectOutputStream outObj = new ObjectOutputStream(new FileOutputStream(new File("config")))) {
             outObj.writeObject(DrawAssistant.options);

@@ -35,15 +35,6 @@ public class UIPolygon implements Serializable {
     }
 
     /**
-     * Simple getter for canvas property
-     *
-     * @return Canvas
-     */
-    public Canvas getCanvas() {
-        return canvas;
-    }
-
-    /**
      * Simple getter for width property
      *
      * @return double which describe width of canvas (property)
