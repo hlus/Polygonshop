@@ -1,4 +1,4 @@
-package sample;
+package sample.Assistants;
 
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
@@ -8,6 +8,9 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import sample.Controller;
+import sample.Model.TriangulatedPolygon;
+import sample.Model.UIPolygon;
 
 import java.util.Arrays;
 
@@ -18,7 +21,7 @@ import java.util.Arrays;
  * @author hlus
  * @version 2.1
  */
-public class DialogHelper {
+public class DialogAssistant {
 
     /**
      * This static method which generate Error Alert

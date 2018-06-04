@@ -1,4 +1,4 @@
-package sample;
+package sample.Assistants;
 
 import java.awt.*;
 import java.io.Serializable;

@@ -1,8 +1,9 @@
-package sample;
+package sample.Model;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import sample.Assistants.DrawAssistant;
 
 import java.io.*;
 import java.util.ArrayList;

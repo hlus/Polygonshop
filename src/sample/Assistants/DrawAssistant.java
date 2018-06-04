@@ -1,8 +1,10 @@
-package sample;
+package sample.Assistants;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import sample.Model.Point2D;
+import sample.Model.Segment;
 
 /**
  * This class just help with draw

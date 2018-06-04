@@ -11,6 +11,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import sample.Assistants.DialogAssistant;
+import sample.Assistants.DrawAssistant;
+import sample.Assistants.OptionValues;
+import sample.Model.UIPolygon;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
@@ -173,7 +177,7 @@ public class Controller {
      */
     @FXML
     private void onCreateNewFile() {
-        Dialog createDialog = DialogHelper.getCreateNewDialog(this.style);
+        Dialog createDialog = DialogAssistant.getCreateNewDialog(this.style);
         createDialog.initOwner(TPPolygonFiles.getScene().getWindow());
         Optional<String[]> result = createDialog.showAndWait();
 
@@ -246,7 +250,7 @@ public class Controller {
      */
     @FXML
     private void onOptions(ActionEvent actionEvent) {
-        Dialog<OptionValues> optionsDialog = DialogHelper.getOptionsDialog(this.style, DrawAssistant.options);
+        Dialog<OptionValues> optionsDialog = DialogAssistant.getOptionsDialog(this.style, DrawAssistant.options);
         optionsDialog.initOwner(TPPolygonFiles.getScene().getWindow());
 
         Optional<OptionValues> result = optionsDialog.showAndWait();
@@ -330,7 +334,7 @@ public class Controller {
      */
     @FXML
     private void onTriangulateInfo() {
-        Alert alert = DialogHelper.getTriangulationInfoDialog(this.style, getSelectedPolygon().getTriangulatedPol());
+        Alert alert = DialogAssistant.getTriangulationInfoDialog(this.style, getSelectedPolygon().getTriangulatedPol());
         alert.initOwner(TPPolygonFiles.getScene().getWindow());
         alert.showAndWait();
     }
@@ -373,7 +377,7 @@ public class Controller {
      * @see Controller#addNewTab(Tab, UIPolygon)
      */
     private void onCloseTab(int tabHashCode) {
-        Alert confirmDialog = DialogHelper.getConfirmSaveDialog(this.style);
+        Alert confirmDialog = DialogAssistant.getConfirmSaveDialog(this.style);
         confirmDialog.initOwner(TPPolygonFiles.getScene().getWindow());
         Optional<ButtonType> result = confirmDialog.showAndWait();
         if (result.get() == ButtonType.OK)
@@ -434,7 +438,7 @@ public class Controller {
      * @param errMsg
      */
     private void showErrorMessage(String errMsg) {
-        Alert errorDialog = DialogHelper.getErrorDialog(this.style, errMsg);
+        Alert errorDialog = DialogAssistant.getErrorDialog(this.style, errMsg);
         errorDialog.initOwner(TPPolygonFiles.getScene().getWindow());
         errorDialog.showAndWait();
     }
