@@ -218,11 +218,11 @@ public class UIPolygon implements Serializable {
         if (polygon != null && polygon.getPoints().size() != 0) {
             List<Point2D> points = polygon.getPoints();
             for (int i = 0; i < points.size() - 1; i++) {
-                DrawAssistant.drawDefaultPoint(canvas, points.get(i));
                 DrawAssistant.drawDefaultLine(canvas, points.get(i), points.get(i + 1));
+                DrawAssistant.drawDefaultPoint(canvas, points.get(i));
             }
-            DrawAssistant.drawDefaultPoint(canvas, points.get(points.size() - 1));
             DrawAssistant.drawDefaultLine(canvas, points.get(0), points.get(points.size() - 1));
+            DrawAssistant.drawDefaultPoint(canvas, points.get(points.size() - 1));
             if (tPol != null) {
                 drawCostCell(tPol.getRootNode());
             }

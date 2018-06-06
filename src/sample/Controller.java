@@ -14,6 +14,7 @@ import javafx.stage.Window;
 import sample.Assistants.DialogAssistant;
 import sample.Assistants.DrawAssistant;
 import sample.Assistants.OptionValues;
+import sample.Model.Polygon;
 import sample.Model.UIPolygon;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -265,7 +266,6 @@ public class Controller {
      */
     @FXML
     private void onExit() {
-        // TODO : Add handle if tabs.size() != 0 ask fow save polygons
         saveOptions();
         ((Stage) TPPolygonFiles.getScene().getWindow()).close();
     }
@@ -295,9 +295,19 @@ public class Controller {
     private void onBuildPolygon() {
         UIPolygon polygonUI = getSelectedPolygon();
         try {
-            if (polygonUI.isBuilding())
+            if (polygonUI.isBuilding()) {
                 polygonUI.endBuildPol();
-            else
+                if (polygonUI.getPolygon().getPolygonType() != Polygon.polygonType.Convex) {
+                    Alert alert = DialogAssistant.getWarningDialog(
+                            style,
+                            polygonUI.getPolygon().getPolygonType() == Polygon.polygonType.Collinear ?
+                                    "Polygon are collinear!" : "Polygon are Concave"
+                    );
+                    alert.initOwner(TPPolygonFiles.getScene().getWindow());
+                    alert.showAndWait();
+                }
+
+            } else
                 polygonUI.beginBuildPol();
         } catch (Exception e) {
             showErrorMessage(e.getMessage());

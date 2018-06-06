@@ -22,7 +22,7 @@ import java.util.List;
  * and have only static methods
  *
  * @author hlus
- * @version 2.2
+ * @version 2.3
  */
 public class DialogAssistant {
 
@@ -58,6 +58,16 @@ public class DialogAssistant {
                 style,
                 Alert.AlertType.ERROR,
                 "Error",
+                null,
+                msg
+        );
+    }
+
+    public static Alert getWarningDialog(String style, String msg) {
+        return getAlertDialog(
+                style,
+                Alert.AlertType.WARNING,
+                "Warning",
                 null,
                 msg
         );
