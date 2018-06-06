@@ -210,6 +210,13 @@ public class UIPolygon implements Serializable {
     }
 
     /**
+     * Draw all vertices of polygon
+     */
+    private void drawAllVertices() {
+        polygon.getPoints().forEach(v -> DrawAssistant.drawDefaultPoint(canvas, v));
+    }
+
+    /**
      * Method which redraw polygon at canvas
      * depending on the polygon property
      */
@@ -217,15 +224,18 @@ public class UIPolygon implements Serializable {
         DrawAssistant.fillCanvas(canvas);
         if (polygon != null && polygon.getPoints().size() != 0) {
             List<Point2D> points = polygon.getPoints();
-            for (int i = 0; i < points.size() - 1; i++) {
+            for (int i = 0; i < points.size() - 1; i++)
                 DrawAssistant.drawDefaultLine(canvas, points.get(i), points.get(i + 1));
-                DrawAssistant.drawDefaultPoint(canvas, points.get(i));
-            }
+
             DrawAssistant.drawDefaultLine(canvas, points.get(0), points.get(points.size() - 1));
-            DrawAssistant.drawDefaultPoint(canvas, points.get(points.size() - 1));
             if (tPol != null) {
-                drawCostCell(tPol.getRootNode());
+                CostCell root = tPol.getRootNode();
+                if (DrawAssistant.options.showTree)
+                    root.getSubNodes().forEach(n -> DrawAssistant.drawTreeLine(canvas, root.getSeg().getMidpoint(), n.getSeg().getMidpoint()));
+                DrawAssistant.drawNodeOfTree(canvas, root.getSeg().getMidpoint());
+                root.getSubNodes().forEach(this::drawCostCell);
             }
+            drawAllVertices();
         }
     }
 
@@ -238,13 +248,13 @@ public class UIPolygon implements Serializable {
      */
     private void drawCostCell(CostCell cell) {
         if (cell == null || cell.getSeg() == null) return;
-        DrawAssistant.drawDefaultDiagonal(canvas, cell.getSeg(), cell.getSubNodes() == null);
         if (cell.getSubNodes() != null)
             for (CostCell subCell : cell.getSubNodes()) {
-                drawCostCell(subCell);
                 if (DrawAssistant.options.showTree)
                     DrawAssistant.drawTreeLine(canvas, cell.getSeg().getMidpoint(), subCell.getSeg().getMidpoint());
+                drawCostCell(subCell);
             }
+        DrawAssistant.drawDefaultDiagonal(canvas, cell.getSeg(), cell.getSubNodes() == null);
     }
 
     /**

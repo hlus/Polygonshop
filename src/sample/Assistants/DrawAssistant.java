@@ -26,7 +26,6 @@ public class DrawAssistant {
     public static void drawDefaultPoint(Canvas canvas, Point2D point) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(options.getVertexColor());
-        //gc.setStroke(Color.BLACK);
         gc.fillOval(point.getX() - options.pointRadius,
                 point.getY() - options.pointRadius,
                 options.pointRadius * 2,
@@ -102,8 +101,8 @@ public class DrawAssistant {
     public static void drawDefaultDiagonal(Canvas canvas, Segment diagonal, boolean leaf) {
         Point2D mid = diagonal.getMidpoint();
         if (!leaf) {
-            drawNodeOfTree(canvas, mid);
             drawDashedLine(canvas, diagonal.getA(), diagonal.getB());
+            drawNodeOfTree(canvas, mid);
         } else
             drawLeafOfTree(canvas, mid);
         double xShift = (diagonal.getDesc().length() * 5.0) / 2.0;
